@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <object type="object" class="MyClass">
+    <myarray type="array">
+      <string type="string" index="0">a</string>
+      <string type="string" index="1">b</string>
+      <string type="string" index="2">c</string>
+    </myarray>
+    <mydictionary type="array">
+      <string type="string" index="a">aa</string>
+      <string type="string" index="b">bb</string>
+      <string type="string" index="c">cc</string>
+    </mydictionary>
+    <mybool type="boolean">1</mybool>
+    <myint type="integer">10</myint>
+    <myclassB type="object" class="ClassB">
+      <name type="string">типа клaсс Б</name>
+    </myclassB>
+  </object>
+  <array type="array">
+    <string type="string" index="0">a</string>
+    <string type="string" index="1">b</string>
+    <string type="string" index="2">c</string>
+  </array>
+</root>

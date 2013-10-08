@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<xsl:stylesheet xmlns:xitec="xitec.dtd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+
+  <xsl:output method="html"/>
+
+  <xsl:template match="/"><xsl:param name="address"/><xsl:param name="realaddress"/><xsl:param name="node"/>
+
+    [xitec:mode=doc]
+
+    doc 
+    
+    will be copied
+    <xsl:call-template name="node"><xsl:with-param name="address" select="$address"/><xsl:with-param name="realaddress" select="$realaddress"/><xsl:with-param name="node" select="$node"/></xsl:call-template>
+    
+    will be generated with path
+    <xsl:call-template name="gen:newline"/><xsl:element name="xsl:call-template"><xsl:attribute name="name"><xsl:apply-templates select="." mode="gen:object-uri"><xsl:with-param name="address" select="$address"/><xsl:with-param name="realaddress" select="$realaddress"/><xsl:with-param name="node" select="$node"/></xsl:apply-templates><xsl:text>/</xsl:text>node</xsl:attribute></xsl:element>
+
+    will be generated clean
+    <xsl:call-template name="gen:newline"/><xsl:element name="xsl:call-template"><xsl:attribute name="name">$node</xsl:attribute></xsl:element>
+
+    will be copied clean
+    <xsl:call-template name="node"><xsl:with-param name="address" select="$address"/><xsl:with-param name="realaddress" select="$realaddress"/><xsl:with-param name="node" select="$node"/></xsl:call-template>
+    <xsl:call-template name="$node"><xsl:with-param name="address" select="$address"/><xsl:with-param name="realaddress" select="$realaddress"/><xsl:with-param name="node" select="$node"/></xsl:call-template>
+
+    
+      will be copied
+      <xsl:call-template name="node"><xsl:with-param name="address" select="$address"/><xsl:with-param name="realaddress" select="$realaddress"/><xsl:with-param name="node" select="$node"/></xsl:call-template>
+      
+      will be generated with path
+      <xsl:element name="xsl:call-template"><xsl:attribute name="name"><xsl:apply-templates select="." mode="gen:object-uri"><xsl:with-param name="address" select="$address"/><xsl:with-param name="realaddress" select="$realaddress"/><xsl:with-param name="node" select="$node"/></xsl:apply-templates><xsl:text>/</xsl:text>node</xsl:attribute></xsl:element>
+
+      will be generated clean
+      <xsl:element name="xsl:call-template"><xsl:attribute name="name">$node</xsl:attribute></xsl:element>
+
+      will be copied clean
+      <xsl:call-template name="node"><xsl:with-param name="address" select="$address"/><xsl:with-param name="realaddress" select="$realaddress"/><xsl:with-param name="node" select="$node"/></xsl:call-template><xsl:call-template name="$node"><xsl:with-param name="address" select="$address"/><xsl:with-param name="realaddress" select="$realaddress"/><xsl:with-param name="node" select="$node"/></xsl:call-template>
+
+    <xsl:text>
+      will be generated
+      </xsl:text><xsl:element name="xsl:call-template"><xsl:attribute name="name">/node</xsl:attribute></xsl:element><xsl:text>
+      
+      will be generated with path
+      </xsl:text><xsl:element name="xsl:call-template"><xsl:attribute name="name"><xsl:apply-templates select="." mode="gen:object-uri"><xsl:with-param name="address" select="$address"/><xsl:with-param name="realaddress" select="$realaddress"/><xsl:with-param name="node" select="$node"/></xsl:apply-templates><xsl:text>/</xsl:text>node</xsl:attribute></xsl:element><xsl:text>
+
+      will be generated clean
+      </xsl:text><xsl:element name="xsl:call-template"><xsl:attribute name="name">$node</xsl:attribute></xsl:element><xsl:text>
+
+      will be copied clean
+      </xsl:text><xsl:call-template name="node"><xsl:with-param name="address" select="$address"/><xsl:with-param name="realaddress" select="$realaddress"/><xsl:with-param name="node" select="$node"/></xsl:call-template><xsl:call-template name="$node"><xsl:with-param name="address" select="$address"/><xsl:with-param name="realaddress" select="$realaddress"/><xsl:with-param name="node" select="$node"/></xsl:call-template>
+    
+  </xsl:template>
+</xsl:stylesheet>

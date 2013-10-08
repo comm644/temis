@@ -1,0 +1,46 @@
+
+  <?php switch( $stage ) { case 'greetings': ?>
+
+	  <center>
+		<div>
+		  
+		  Welcome to TEMIS Framework installation in your envonment.<br/>
+		  Now script perform checking your settings and creates configuration files.
+		  
+		</div>
+	  </center>
+	  
+  <?php break; case 'checking': ?>
+  <?php global $EMBEDDED; if ( !isset($EMBEDDED) ) { ?>
+  <p>Checking your system have finish successes.</p>
+  <?php } ?>
+
+  <?php break; case 'settings': ?>
+	  <br/>
+	  Please input your internal encoding: <input type="text" value="utf-8" name="encoding" >
+			  
+  <?php break; case 'review': ?>
+			
+  <?php break; case 'setup': ?>
+		<br/>	  
+	  Please set read-only access to <?php echo SETTINGS_DIR; ?><br/>
+	  Please set read-only access to <?php echo COMPILED_DIR; ?><br/>
+	  
+  <?php break; case 'verify':  ?>
+	  
+  <?php break; case 'bye':  ?>
+
+	  <center>
+		<div style='text-align:left;width:30em;'>
+		  Installation in your environment have finished successed.<br/>
+		  Please read HOWTO <a target="_parent" href="../manual/quickstart">Quick start</a> <br/>
+		  And  <a href="../manual" target="_parent">Developer manual</a> <br/>
+		  <br/>
+		  Have a nice day!
+		</div>
+	  </center>
+	  
+  <?php break; case 'failed':  ?>
+	     <br/>
+	     Please fix the caused problems and <a href="javascript:window.location.reload();"> reload this page.</a>
+	  <?php break; } ?>

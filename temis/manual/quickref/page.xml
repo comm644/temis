@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <page type="object" class="mypage">
+    <btnOK type="object" class="xmlbutton">
+      <visible type="boolean">1</visible>
+      <onclick type="object" class="event">
+        <name type="string">onclick</name>
+        <handlers type="array">
+          <string type="string" index="0">onclick</string>
+        </handlers>
+      </onclick>
+      <text type="string">text</text>
+      <target type="string">_self</target>
+      <attributes type="array">
+        <string type="string" index="name">hello</string>
+      </attributes>
+    </btnOK>
+    <btnNew type="object" class="xmlbutton">
+      <visible type="boolean">1</visible>
+      <onClick type="object" class="event">
+        <name type="string">onClick</name>
+        <handlers type="array"/>
+      </onClick>
+      <text type="string">text</text>
+      <target type="string">_new</target>
+      <onclick type="string">new_onclick</onclick>
+    </btnNew>
+    <clicked type="boolean"></clicked>
+    <url type="string"></url>
+    <back type="string"></back>
+    <isPostBack type="boolean"></isPostBack>
+    <viewstate type="string"></viewstate>
+    <lblPath type="object" class="xmllabel">
+      <visible type="boolean">1</visible>
+      <onlick type="NULL"></onlick>
+      <text type="string">label</text>
+    </lblPath>
+
+    <tbText type="object" class="xmltextbox">
+      <visible type="boolean">1</visible>
+      <onlick type="NULL"></onlick>
+      <text type="string">texbox</text>
+    </tbText>
+
+    <rbRadioButton type="object" class="uiRadioButton">
+      <autoPostBack type="boolean">1</autoPostBack>
+      <visible type="boolean">1</visible>
+      <onlick type="NULL"></onlick>
+      <text type="string">radio button</text>
+      <value type="integer">0</value>
+    </rbRadioButton>
+
+    <cbCheckBox type="object" class="uiCheckBox">
+      <visible type="boolean">1</visible>
+      <onlick type="NULL"></onlick>
+      <text type="string">check box</text>
+      <checked type="boolean">1</checked>
+    </cbCheckBox>
+
+    <dropdown class="dropdownlist">
+      <visible type="boolean">1</visible>
+      <items class="array">
+        <string index="0">Value0</string>
+        <string index="1">Value1</string>
+      </items>
+<!--
+      <onchange type="object" class="event">
+        <name type="string">onchange</name>
+        <handlers type="array">
+          <string type="string" index="0">onclick</string>
+        </handlers>
+      </onchange>
+-->
+    </dropdown>
+
+    <multiselect class="uiMultiselect">
+      <visible type="boolean">1</visible>
+      <items class="array">
+        <string index="0">Value0</string>
+        <string index="1">Value1</string>
+        <string index="2">Value2</string>
+      </items>
+      <selected>
+        <string>0</string>
+        <string>1</string>
+      </selected>
+    </multiselect> 
+
+    <multicheck class="uiMulticheck">
+      <visible type="boolean">1</visible>
+      <selected>
+        <string>cb1</string>
+        <string>cb2</string>
+      </selected>
+    </multicheck> 
+
+    <data type="array">
+      <string type="string" index="car1">blue</string>
+      <string type="string" index="car2">yellow</string>
+    </data>
+
+  </page>
+</root>

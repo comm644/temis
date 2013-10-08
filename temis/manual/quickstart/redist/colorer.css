@@ -1,0 +1,43 @@
+code {
+  text-align:left;
+  font-size:9pt;
+  font-family: 'Fixedsys', 'courier new', courier, fixed;
+}
+
+.code
+{
+  text-align:left;
+  font-size:9pt;
+  font-family: 'Fixedsys', 'courier new', courier, fixed;
+  background-color: #E5E5E5;
+}
+
+.code span.text
+{
+  color:#000000;
+}
+
+.code span.comment
+{
+  color:#008000;
+}
+
+.code span.tag
+{
+  color:#0000BB;
+}
+
+.code span.attribute
+{
+  color:#DD0000;
+}
+
+.code span.value
+{
+  color:#800080;	
+}
+
+.code span.comment span
+{
+  color:#008000;
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<!--
+    TODO define vocabulary identification data
+    PUBLIC ID  : -//temis//vocabulary//EN
+    SYSTEM ID  : http://temis.sigmalab.ru/v01/temis.dtd
+-->
+
+<!-- TODO define your own vocabulary/syntax. Example follows:  -->
+<!ELEMENT __ROOT__ ANY>
+<!ATTLIST __ROOT__ version CDATA #IMPLIED>
+
+<!ELEMENT ui:textbox ANY>
+<!ATTLIST ui:textbox
+    id CDATA #REQUIRED
+    value CDATA #IMPLIED
+    ui:mode CDATA (singleline|multiline) "singleline"
+    ui:visibility  (yes|no|test)  "test"
+    ui:index   CDATA #IMPLIED
+    onchange   CDATA #IMPLIED
+    onclick    CDATA #IMPLIED
+    rows    CDATA #IMPLIED
+    cols    CDATA #IMPLIED
+  >
+
+<!ELEMENT ui:button ANY>
+<!ATTLIST ui:button
+    id CDATA #REQUIRED
+    value      CDATA #IMPLIED
+    type       (button|submit|clear) "button"
+    onclick    CDATA #IMPLIED
+    class     CDATA #IMPLIED
+    tabindex  CDATA #IMPLIED
+    ui:caption CDATA #IMPLIED
+    ui:target  CDATA #IMPLIED
+    ui:visibility  (yes|no|test)  "test"
+    ui:index   CDATA #IMPLIED
+    ui:tooltip  CDATA #IMPLIED
+  >
+
+<!ELEMENT ui:file ANY>
+<!ATTLIST ui:file
+    id CDATA #REQUIRED
+    ui:target  CDATA #IMPLIED
+    ui:visibility  (yes|no|test)  "test"
+    ui:index   CDATA #IMPLIED
+    ui:tooltip  CDATA #IMPLIED
+>
+
+<!ELEMENT ui:msg ANY>
+<!ATTLIST ui:msg
+    id CDATA #REQUIRED
+>

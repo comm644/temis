@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+<root>
+  <page>
+    <radio1 type="object" class="uiRadioButton">
+      <value type="string">0</value>
+      <onclick type="object" class="Event">
+        <name type="string">onclick</name>
+        <handlers type="array"/>
+      </onclick>
+      <onchange type="object" class="Event">
+        <name type="string">onchange</name>
+        <handlers type="array">
+          <object type="object" class="EventHandler" index="0">
+            <method type="string">setText</method>
+            <object type="string">$page-&gt;lblActivated</object>
+          </object>
+        </handlers>
+      </onchange>
+      <visible type="boolean">1</visible>
+      <autoPostBack type="boolean"></autoPostBack>
+      <name type="string">page$radio1</name>
+    </radio1>
+
+    <radioClick type="object" class="uiRadioButton">
+      <value type="string">0</value>
+      <onclick type="object" class="Event">
+        <name type="string">onclick</name>
+        <handlers type="array"/>
+      </onclick>
+      <onchange type="object" class="Event">
+        <name type="string">onchange</name>
+        <handlers type="array"/>
+      </onchange>
+      <visible type="boolean">1</visible>
+      <autoPostBack type="boolean"></autoPostBack>
+      <name type="string">page$radioNoHandle</name>
+    </radioClick>
+
+    <radio1 type="object" class="uiRadioButton">
+      <value type="string">0</value>
+      <onclick type="object" class="Event">
+        <name type="string">onclick</name>
+        <handlers type="array">
+		  <string type="string" index="0">onClick</string>
+		</handlers>
+      </onclick>
+      <onchange type="object" class="Event">
+        <name type="string">onchange</name>
+        <handlers type="array"/>
+      </onchange>
+      <visible type="boolean">1</visible>
+      <autoPostBack type="boolean"></autoPostBack>
+      <name type="string">page$radioNoHandle</name>
+    </radio1>
+
+    <radioClickAuto type="object" class="radioClickAuto">
+      <value type="string">0</value>
+      <onclick type="object" class="Event">
+        <name type="string">onclick</name>
+        <handlers type="array">
+		  <string type="string" index="0">onClick</string>
+		</handlers>
+      </onclick>
+      <onchange type="object" class="Event">
+        <name type="string">onchange</name>
+        <handlers type="array"/>
+      </onchange>
+      <visible type="boolean">1</visible>
+      <autoPostBack type="boolean">1</autoPostBack>
+      <name type="string">radioClickAuto</name>
+    </radioClickAuto>
+
+    <radio1 type="object" class="uiRadioButton">
+      <value type="string">0</value>
+      <onclick type="object" class="Event">
+        <name type="string">onclick</name>
+        <handlers type="array">
+		  <string type="string" index="0">onClick</string>
+		</handlers>
+      </onclick>
+      <onchange type="object" class="Event">
+        <name type="string">onchange</name>
+        <handlers type="array">
+		  <string type="string" index="0">onchange</string>
+		</handlers>
+      </onchange>
+      <visible type="boolean">1</visible>
+      <autoPostBack type="boolean"></autoPostBack>
+      <name type="string">page$radioNoHandle</name>
+    </radio1>
+
+    <radioClickAuto type="object" class="radioClickAuto">
+      <value type="string">0</value>
+      <onclick type="object" class="Event">
+        <name type="string">onclick</name>
+        <handlers type="array">
+		  <string type="string" index="0">onClick</string>
+		</handlers>
+      </onclick>
+      <onchange type="object" class="Event">
+        <name type="string">onchange</name>
+        <handlers type="array"/>
+      </onchange>
+      <visible type="boolean">1</visible>
+      <autoPostBack type="boolean">1</autoPostBack>
+      <name type="string">radioClickAuto</name>
+    </radioClickAuto>
+	
+	
+	<btnOK type="object" class="uiButton">
+	  <onclick type="object" class="Event">
+		<name type="string">onclick</name>
+		<handlers type="array">
+		  <string type="string" index="0">onClick</string>
+		</handlers>
+	  </onclick>
+	  <text type="string"></text>
+	  <target type="string">_self</target>
+	  <autoPostBack type="boolean">1</autoPostBack>
+	  <visible type="boolean">1</visible>
+	  <name type="string">btnOK</name>
+	</btnOK>
+	<btnWithCaption type="object" class="uiButton">
+	  <onclick type="object" class="Event">
+		<name type="string">onclick</name>
+		<handlers type="array">
+		  <string type="string" index="0">onClick</string>
+		</handlers>
+	  </onclick>
+	  <text type="string">Program defined caption</text>
+	  <target type="string">_self</target>
+	  <autoPostBack type="boolean">1</autoPostBack>
+	  <visible type="boolean">1</visible>
+	  <name type="string">btnWithCaption</name>
+	</btnWithCaption>
+	<btnNoHandle type="object" class="uiButton">
+	  <onclick type="object" class="Event">
+		<name type="string">onclick</name>
+		<handlers type="array">
+		</handlers>
+	  </onclick>
+	  <text type="string"></text>
+	  <target type="string">_self</target>
+	  <autoPostBack type="boolean">1</autoPostBack>
+	  <visible type="boolean">1</visible>
+	  <name type="string">btnNoHandle</name>
+	</btnNoHandle>
+	<btnInvisible type="object" class="uiButton">
+	  <onclick type="object" class="Event">
+		<name type="string">onclick</name>
+		<handlers type="array">
+		  <string type="string" index="0">onClick</string>
+		</handlers>
+	  </onclick>
+	  <text type="string"></text>
+	  <target type="string">_self</target>
+	  <autoPostBack type="boolean">1</autoPostBack>
+	  <visible type="boolean">0</visible>
+	  <name type="string">btnInvisible</name>
+	</btnInvisible>
+	<items type="array">
+	  <item index="0">item0</item>
+	  <item index="1">item1</item>
+	  <item index="2">item2</item>
+	</items>
+  </page>
+</root>  

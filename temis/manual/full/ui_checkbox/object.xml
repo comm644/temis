@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF8"?>
+<root>
+  <page type="object" class="pageTestCheckbox">
+    <url type="string">/temis2/temis/templates/widgets/tests/checkbox/page.php</url>
+    <previousUrl type="NULL"></previousUrl>
+    <isPostBack type="boolean"></isPostBack>
+    <viewstate type="string"></viewstate>
+    <signRequestReload type="boolean"></signRequestReload>
+    <signRequestRedirect type="boolean"></signRequestRedirect>
+    <redirectUrl type="string"></redirectUrl>
+    <disableSaving type="boolean"></disableSaving>
+    <signUseViewState type="boolean"></signUseViewState>
+    <checkbox1 type="object" class="uiCheckboxButton">
+      <value type="NULL"></value>
+      <onclick type="object" class="Event">
+        <name type="string">onclick</name>
+        <handlers type="array"/>
+      </onclick>
+      <onchange type="object" class="Event">
+        <name type="string">onchange</name>
+        <handlers type="array"/>
+      </onchange>
+      <visible type="boolean">1</visible>
+      <autoPostBack type="boolean"></autoPostBack>
+      <name type="string">page$checkbox1</name>
+    </checkbox1>
+    <checkboxClick type="object" class="uiCheckboxButton">
+      <value type="NULL"></value>
+      <onclick type="object" class="Event">
+        <name type="string">onclick</name>
+        <handlers type="array">
+          <string type="string" index="0">onclick</string>
+        </handlers>
+      </onclick>
+      <onchange type="object" class="Event">
+        <name type="string">onchange</name>
+        <handlers type="array"/>
+      </onchange>
+      <visible type="boolean">1</visible>
+      <autoPostBack type="boolean"></autoPostBack>
+      <name type="string">page$checkboxClick</name>
+    </checkboxClick>
+    <checkboxClickAuto type="object" class="uiCheckboxButton">
+      <value type="NULL"></value>
+      <onclick type="object" class="Event">
+        <name type="string">onclick</name>
+        <handlers type="array">
+          <string type="string" index="0">onclick</string>
+        </handlers>
+      </onclick>
+      <onchange type="object" class="Event">
+        <name type="string">onchange</name>
+        <handlers type="array"/>
+      </onchange>
+      <visible type="boolean">1</visible>
+      <autoPostBack type="boolean">1</autoPostBack>
+      <name type="string">page$checkboxClickAuto</name>
+    </checkboxClickAuto>
+    <checkboxChange type="object" class="uiCheckboxButton">
+      <value type="NULL"></value>
+      <onclick type="object" class="Event">
+        <name type="string">onclick</name>
+        <handlers type="array"/>
+      </onclick>
+      <onchange type="object" class="Event">
+        <name type="string">onchange</name>
+        <handlers type="array">
+          <string type="string" index="0">onchange</string>
+        </handlers>
+      </onchange>
+      <visible type="boolean">1</visible>
+      <autoPostBack type="boolean"></autoPostBack>
+      <name type="string">page$checkboxChange</name>
+    </checkboxChange>
+    <checkboxChangeAuto type="object" class="uiCheckboxButton">
+      <value type="NULL"></value>
+      <onclick type="object" class="Event">
+        <name type="string">onclick</name>
+        <handlers type="array"/>
+      </onclick>
+      <onchange type="object" class="Event">
+        <name type="string">onchange</name>
+        <handlers type="array">
+          <string type="string" index="0">onchange</string>
+        </handlers>
+      </onchange>
+      <visible type="boolean">1</visible>
+      <autoPostBack type="boolean">1</autoPostBack>
+      <name type="string">page$checkboxChangeAuto</name>
+    </checkboxChangeAuto>
+    <checkboxInvisible type="object" class="uiCheckboxButton">
+      <value type="NULL"></value>
+      <onclick type="object" class="Event">
+        <name type="string">onclick</name>
+        <handlers type="array"/>
+      </onclick>
+      <onchange type="object" class="Event">
+        <name type="string">onchange</name>
+        <handlers type="array"/>
+      </onchange>
+      <visible type="boolean"></visible>
+      <autoPostBack type="boolean"></autoPostBack>
+      <name type="string">page$checkboxInvisible</name>
+    </checkboxInvisible>
+    <name type="string">page</name>
+	<items type="array">
+	  <item index="0">item0</item>
+	  <item index="1">item1</item>
+	  <item index="2">item2</item>
+	</items>
+  </page>
+</root>

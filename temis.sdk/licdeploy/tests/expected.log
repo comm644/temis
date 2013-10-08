@@ -1,0 +1,6 @@
+[1] Processing L:\projs\temis2\temis\sdk\licdeploy\tests\example.php..OK
+[1] Processing L:\projs\temis2\temis\sdk\licdeploy\tests\example.xsl..OK
+[2] Processing L:\projs\temis2\temis\sdk\licdeploy\tests\sub\example.php..OK
+[2] Processing L:\projs\temis2\temis\sdk\licdeploy\tests\sub\example.xsl..OK
+[3] Processing L:\projs\temis2\temis\sdk\licdeploy\tests\sub\sub\example.php..OK
+[3] Processing L:\projs\temis2\temis\sdk\licdeploy\tests\sub\sub\example.xsl..OK

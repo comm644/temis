@@ -1,0 +1,6 @@
+#SetHandler application/x-httpd-php
+
+#AddType application/x-httpd-php .
+
+directoryIndex  index.php
+#Options +All +Indexes 

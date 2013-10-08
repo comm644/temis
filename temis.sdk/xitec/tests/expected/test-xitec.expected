@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<xsl:stylesheet xmlns:xitec="xitec.dtd" xmlns:macro="macro.dtd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+
+  <xsl:output method="xml"/>
+
+  
+  <xsl:template match="/"><xsl:param name="address"/><xsl:param name="realaddress"/><xsl:param name="node"/>
+
+    [xitec:mode=doc]
+
+    doc - object
+    [xitec:mode=object]<xsl:text>
+      will be generated
+      </xsl:text><xsl:element name="xsl:element"/>
+
+    doc - widget
+    [xitec:mode=widget]
+      will be copied
+      <xsl:element/>
+
+    widget - object
+    [xitec:mode=widget][xitec:mode=object]<xsl:text>
+        will be generated
+        </xsl:text><xsl:element name="xsl:element"/>
+
+    object - widget
+    [xitec:mode=object][xitec:mode=widget]
+        will be copied
+        <xsl:element/>
+    
+  </xsl:template>
+
+</xsl:stylesheet>

@@ -1,0 +1,82 @@
+
+body{
+  width: 600pt;
+  padding-left: 20pt;
+}
+
+pre {
+  background-color: #DBDBDB;
+  border: thin solid black;
+  margin:0px 0px 0px 0px;
+  padding-top:5px;
+  padding-bottom: 5px;
+  width: auto;
+  border: thin solid black;
+}
+
+div#toc {
+  display: block;
+  background-color: #EFEFEF;
+  border: thin solid black;
+  width: 400pt;
+}
+
+hr  {
+  margin-top : 50pt;
+}
+
+.border {
+  border: thin solid black;
+}
+.padding {
+  padding: 5px 5px 5px 5px;  
+}
+.padding2 {
+  margin: 1em 1em 1em 1em;  
+  padding: 1em 1em 1em 1em;  
+}
+.attention {
+  background-color:#FFE2E2;
+  border: thin solid black;
+  margin: 1em 1em 1em 1em;
+  padding: 1em 1em 1em 1em;
+  
+}
+.red {
+  color: red;
+  font-weight:bold;
+}
+.blue {
+  color: blue;
+  font-weight:bold;
+}
+.green {
+  color: #CDFFD1;
+  font-weight:bold;
+}
+.bold {
+  color: blue;
+  font-weight:bold;
+}
+
+
+.wide li {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+h2 {
+  margin-top: 3em;
+}
+
+ul.sidebar {
+  padding-left: 20px;  
+}
+
+.sidebar li {
+  left: 10px;
+}
+
+.sample {
+  background-color: #CDFFFF;
+}

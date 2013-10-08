@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- 
+
+   Copyright (c) 2008 Alexey V. Vasilyev
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+-->
+<xsl:stylesheet xmlns:ui="ui.dtd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="ui" version="1.0">
+
+  <xsl:output method="html"/>
+
+
+  <xsl:template name="insert-head">
+    <head>
+      <link rel="stylesheet" type="text/css" href="../demo.css"/>
+    </head>
+  </xsl:template><xsl:template name="insert-header">
+    <a href="../">Back</a>
+    <hr/>
+  </xsl:template><xsl:template name="insert-footer">
+    <hr/>
+    <h1>Diagnostics</h1>
+    <h2>HTML code</h2>
+
+    <script>
+      function showHTML()
+      {
+      var html = document.getElementById( 'html');
+      html.innerText = "";
+      var content = document.nodeToString( document.documentElement, '' );
+      var textNode = document.createTextNode( content );
+      html.replaceChild( textNode, html.firstChild);
+      }
+
+    </script>
+    <input type="button" onclick="showHTML();return true;" value="Show html"/>
+      
+    <pre id="html">
+      HTML 
+    </pre>
+
+    <h2>PHP Code </h2>
+    <xsl:value-of disable-output-escaping="yes" select="code"/>
+    
+
+    
+    <h2>Page object</h2>
+    
+<xsl:if test="/root/page/btnSubmit/visible = '1'">
+<input id="page$btnSubmit" name="page$btnSubmit" type="button" value="Post values">
+<xsl:if test="count( /root/page/btnSubmit/onclick/handlers/* ) != 0 and /root/page/btnSubmit/autoPostBack = '1'"><xsl:attribute name="onclick">_temis.sendMessage(this,_temis.createEvent('onclick','page$btnSubmit'),_temis.createTarget('',''));</xsl:attribute></xsl:if></input></xsl:if>
+    <pre>
+      <xsl:value-of select="content"/>
+    </pre>
+    <script language="javascript" src="../../js/toc.js"/>
+    <script>insertTOC();</script>
+  </xsl:template>
+  
+  
+  <xsl:template match="/root/page">
+
+    <html>
+      <xsl:call-template name="insert-head"/>
+      <body>
+<form onsubmit="_temis.submit();" name="_main" method="POST" enctype="multipart/form-data" accept-charset="UTF-8"><script language="javascript" src="/temis2/modules/temis/compiled/temis.js"/><input type="hidden" name="__postback" value="0"/><input type="hidden" name="__action" value=""/><input type="hidden" name="__value" value=""/><input type="hidden" name="__viewstate">
+<xsl:attribute name="value"><xsl:value-of select="/root/page/viewstate"/></xsl:attribute></input><input type="hidden" name="__selfurl">
+<xsl:attribute name="value"><xsl:value-of select="/root/page/url"/></xsl:attribute></input>
+        <xsl:call-template name="insert-header"/>
+
+        <h1>Test ui:visible</h1>
+
+        <h2>Description</h2>
+        <p>
+          Visibility block provide service for checking visibily of some ui object and
+          insert or not insert internal block.
+
+          Usually can be user for generating menu items, because if you want to create
+          menu based on CSS wuth using list items your have need write the code:
+        </p>
+        <pre>
+        &lt;li&gt;
+          &lt;ui:button id="miSomeItem" ui:caption="some menu item"/&gt;
+        &lt;/li&gt;</pre>
+        
+        <p>
+          now if you would like to hide this item phisically (do not say anything about this item to user)
+          then you need to remove all items which have arrounding button.
+          <br/>
+          
+          For geetting this feature need to use this UI element:
+        </p>
+        
+        <pre>
+        &lt;ui:visible id="miSomeItem"&gt;
+          &lt;li&gt;
+            &lt;ui:button id="miSomeItem" ui:caption="some menu item"/&gt;
+          &lt;/li&gt;
+        &lt;/ui:visible&gt;</pre>
+
+        
+        
+        <h2 id="visivility">
+          Visibility
+        </h2>
+
+        <table border="1" cellspacing="0" width="400pt" style="empty-cells:show;">
+          <tr>
+            <th>Object</th>
+            <th>Value setted</th>
+            <th>Visible</th>
+            <th>Invisible</th>
+          </tr>
+
+          <tr>
+            <td>defined</td>
+            <td>always</td>
+            <td>
+              <pre>
+  &lt;ui:visible id="btnVisible"
+    ui:visibility="yes"&gt;
+    some content
+  &lt;/ui:visible&gt;</pre>
+  
+              
+                some content
+                <input id="page$btnVisible" name="page$btnVisible" type="button" value="click me">
+<xsl:if test="count( /root/page/btnVisible/onclick/handlers/* ) != 0 and /root/page/btnVisible/autoPostBack = '1'"><xsl:attribute name="onclick">_temis.sendMessage(this,_temis.createEvent('onclick','page$btnVisible'),_temis.createTarget('',''));</xsl:attribute></xsl:if></input>
+              
+            </td>
+            <td>
+              <pre>
+  &lt;ui:visible id="btnVisible"
+    ui:visibility="no"&gt;
+    some content
+  &lt;/ui:visible&gt;</pre>
+              
+            </td>
+          </tr>
+          <tr>
+            <td>defined</td>
+            <td>by server</td>
+            <td>
+              <pre>
+  &lt;ui:visible id="btnVisible"
+    ui:visibility="test"&gt;
+    some content
+  &lt;/ui:visible&gt;</pre>
+              
+<xsl:if test="/root/page/btnVisible/visible = '1'">
+
+                some content
+                
+<xsl:if test="/root/page/btnVisible/visible = '1'">
+<input id="page$btnVisible" name="page$btnVisible" type="button" value="click me">
+<xsl:if test="count( /root/page/btnVisible/onclick/handlers/* ) != 0 and /root/page/btnVisible/autoPostBack = '1'"><xsl:attribute name="onclick">_temis.sendMessage(this,_temis.createEvent('onclick','page$btnVisible'),_temis.createTarget('',''));</xsl:attribute></xsl:if></input></xsl:if>
+              </xsl:if>
+            </td>
+            <td>
+              
+<xsl:if test="/root/page/btnInvisible/visible = '1'">
+
+                some content
+                
+<xsl:if test="/root/page/btnInvisible/visible = '1'">
+<input id="page$btnInvisible" name="page$btnInvisible" type="button"><xsl:choose><xsl:when test="/root/page/btnInvisible/text != ''"><xsl:attribute name="value"><xsl:value-of select="/root/page/btnInvisible/text"/></xsl:attribute></xsl:when></xsl:choose>
+<xsl:if test="count( /root/page/btnInvisible/onclick/handlers/* ) != 0 and /root/page/btnInvisible/autoPostBack = '1'"><xsl:attribute name="onclick">_temis.sendMessage(this,_temis.createEvent('onclick','page$btnInvisible'),_temis.createTarget('',''));</xsl:attribute></xsl:if></input></xsl:if>
+              </xsl:if>
+            </td>
+          </tr>
+          <tr>
+            <td>defined</td>
+            <td>default</td>
+            <td>
+              <pre>
+  &lt;ui:visible id="btnVisible"&gt;
+    some content
+  &lt;/ui:visible&gt;</pre>
+              
+<xsl:if test="/root/page/btnVisible/visible = '1'">
+
+                some content
+                
+<xsl:if test="/root/page/btnVisible/visible = '1'">
+<input id="page$btnVisible" name="page$btnVisible" type="button" value="click me">
+<xsl:if test="count( /root/page/btnVisible/onclick/handlers/* ) != 0 and /root/page/btnVisible/autoPostBack = '1'"><xsl:attribute name="onclick">_temis.sendMessage(this,_temis.createEvent('onclick','page$btnVisible'),_temis.createTarget('',''));</xsl:attribute></xsl:if></input></xsl:if>
+              </xsl:if>
+            </td>
+            <td>
+              
+<xsl:if test="/root/page/btnInvisible/visible = '1'">
+
+                some content
+                
+<xsl:if test="/root/page/btnInvisible/visible = '1'">
+<input id="page$btnInvisible" name="page$btnInvisible" type="button"><xsl:choose><xsl:when test="/root/page/btnInvisible/text != ''"><xsl:attribute name="value"><xsl:value-of select="/root/page/btnInvisible/text"/></xsl:attribute></xsl:when></xsl:choose>
+<xsl:if test="count( /root/page/btnInvisible/onclick/handlers/* ) != 0 and /root/page/btnInvisible/autoPostBack = '1'"><xsl:attribute name="onclick">_temis.sendMessage(this,_temis.createEvent('onclick','page$btnInvisible'),_temis.createTarget('',''));</xsl:attribute></xsl:if></input></xsl:if>
+              </xsl:if>
+            </td>
+          </tr>
+          <tr>
+            <td>undefined</td>
+            <td>always</td>
+            <td>
+              <pre>
+  &lt;ui:visible id="UndefinedButton"
+    ui:visibility="yes"&gt;
+    some content
+  &lt;/ui:visible&gt;</pre>
+              
+                some content
+                <input id="page$UndefinedButton" name="page$UndefinedButton" type="button"><xsl:choose><xsl:when test="/root/page/UndefinedButton/text != ''"><xsl:attribute name="value"><xsl:value-of select="/root/page/UndefinedButton/text"/></xsl:attribute></xsl:when></xsl:choose>
+<xsl:if test="count( /root/page/UndefinedButton/onclick/handlers/* ) != 0 and /root/page/UndefinedButton/autoPostBack = '1'"><xsl:attribute name="onclick">_temis.sendMessage(this,_temis.createEvent('onclick','page$UndefinedButton'),_temis.createTarget('',''));</xsl:attribute></xsl:if></input>
+              
+            </td>
+            <td>
+              <pre>
+  &lt;ui:visible id="UndefinedButton"
+    ui:visibility="yes"&gt;
+    some content
+  &lt;/ui:visible&gt;</pre>
+              
+            </td>
+          </tr>
+          <tr>
+            <td>undefined</td>
+            <td>by server</td>
+            <td>
+              <pre>
+  &lt;ui:visible id="UndefinedButton"
+    ui:visibility="test"&gt;
+    some content
+  &lt;/ui:visible&gt;</pre>
+              
+<xsl:if test="/root/page/UndefinedButton/visible = '1'">
+
+                some content
+                
+<xsl:if test="/root/page/UndefinedButton/visible = '1'">
+<input id="page$UndefinedButton" name="page$UndefinedButton" type="button"><xsl:choose><xsl:when test="/root/page/UndefinedButton/text != ''"><xsl:attribute name="value"><xsl:value-of select="/root/page/UndefinedButton/text"/></xsl:attribute></xsl:when></xsl:choose>
+<xsl:if test="count( /root/page/UndefinedButton/onclick/handlers/* ) != 0 and /root/page/UndefinedButton/autoPostBack = '1'"><xsl:attribute name="onclick">_temis.sendMessage(this,_temis.createEvent('onclick','page$UndefinedButton'),_temis.createTarget('',''));</xsl:attribute></xsl:if></input></xsl:if>
+              </xsl:if>
+
+              
+<xsl:if test="/root/page/UndefinedButton/visible = '1'">
+<input id="page$UndefinedButton" name="page$UndefinedButton" type="button"><xsl:choose><xsl:when test="/root/page/UndefinedButton/text != ''"><xsl:attribute name="value"><xsl:value-of select="/root/page/UndefinedButton/text"/></xsl:attribute></xsl:when></xsl:choose>
+<xsl:if test="count( /root/page/UndefinedButton/onclick/handlers/* ) != 0 and /root/page/UndefinedButton/autoPostBack = '1'"><xsl:attribute name="onclick">_temis.sendMessage(this,_temis.createEvent('onclick','page$UndefinedButton'),_temis.createTarget('',''));</xsl:attribute></xsl:if></input></xsl:if>
+            </td>
+            <td>
+              
+<xsl:if test="/root/page/UndefinedButton/visible = '1'">
+
+                some content
+                
+<xsl:if test="/root/page/UndefinedButton/visible = '1'">
+<input id="page$UndefinedButton" name="page$UndefinedButton" type="button"><xsl:choose><xsl:when test="/root/page/UndefinedButton/text != ''"><xsl:attribute name="value"><xsl:value-of select="/root/page/UndefinedButton/text"/></xsl:attribute></xsl:when></xsl:choose>
+<xsl:if test="count( /root/page/UndefinedButton/onclick/handlers/* ) != 0 and /root/page/UndefinedButton/autoPostBack = '1'"><xsl:attribute name="onclick">_temis.sendMessage(this,_temis.createEvent('onclick','page$UndefinedButton'),_temis.createTarget('',''));</xsl:attribute></xsl:if></input></xsl:if>
+              </xsl:if>
+            </td>
+          </tr>
+          <tr>
+            <td>undefined</td>
+            <td>default</td>
+            <td>
+              <pre>
+ &lt;ui:visible id="UndefinedButton"&gt;
+    some content
+  &lt;/ui:visible&gt;</pre>
+              
+<xsl:if test="/root/page/UndefinedButton/visible = '1'">
+
+                some content
+                
+<xsl:if test="/root/page/UndefinedButton/visible = '1'">
+<input id="page$UndefinedButton" name="page$UndefinedButton" type="button"><xsl:choose><xsl:when test="/root/page/UndefinedButton/text != ''"><xsl:attribute name="value"><xsl:value-of select="/root/page/UndefinedButton/text"/></xsl:attribute></xsl:when></xsl:choose>
+<xsl:if test="count( /root/page/UndefinedButton/onclick/handlers/* ) != 0 and /root/page/UndefinedButton/autoPostBack = '1'"><xsl:attribute name="onclick">_temis.sendMessage(this,_temis.createEvent('onclick','page$UndefinedButton'),_temis.createTarget('',''));</xsl:attribute></xsl:if></input></xsl:if>
+              </xsl:if>
+
+              
+<xsl:if test="/root/page/UndefinedButton/visible = '1'">
+<input id="page$UndefinedButton" name="page$UndefinedButton" type="button"><xsl:choose><xsl:when test="/root/page/UndefinedButton/text != ''"><xsl:attribute name="value"><xsl:value-of select="/root/page/UndefinedButton/text"/></xsl:attribute></xsl:when></xsl:choose>
+<xsl:if test="count( /root/page/UndefinedButton/onclick/handlers/* ) != 0 and /root/page/UndefinedButton/autoPostBack = '1'"><xsl:attribute name="onclick">_temis.sendMessage(this,_temis.createEvent('onclick','page$UndefinedButton'),_temis.createTarget('',''));</xsl:attribute></xsl:if></input></xsl:if>
+            </td>
+            <td>
+              
+<xsl:if test="/root/page/UndefinedButton/visible = '1'">
+
+                some content
+                
+<xsl:if test="/root/page/UndefinedButton/visible = '1'">
+<input id="page$UndefinedButton" name="page$UndefinedButton" type="button"><xsl:choose><xsl:when test="/root/page/UndefinedButton/text != ''"><xsl:attribute name="value"><xsl:value-of select="/root/page/UndefinedButton/text"/></xsl:attribute></xsl:when></xsl:choose>
+<xsl:if test="count( /root/page/UndefinedButton/onclick/handlers/* ) != 0 and /root/page/UndefinedButton/autoPostBack = '1'"><xsl:attribute name="onclick">_temis.sendMessage(this,_temis.createEvent('onclick','page$UndefinedButton'),_temis.createTarget('',''));</xsl:attribute></xsl:if></input></xsl:if>
+              </xsl:if>
+            </td>
+          </tr>
+        </table>
+
+        <xsl:call-template name="insert-footer"/>
+      </form></body>
+    </html>
+
+  </xsl:template>
+
+</xsl:stylesheet>

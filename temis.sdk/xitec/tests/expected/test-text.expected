@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<xsl:stylesheet xmlns:xitec="xitec.dtd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+
+  <xsl:output method="html"/>
+
+  <xsl:template match="/"><xsl:param name="address"/><xsl:param name="realaddress"/><xsl:param name="node"/>
+
+    [xitec:mode=doc]
+    <xsl:element name="xsl:text"><xsl:text>
+        some text
+      </xsl:text></xsl:element><xsl:text>
+
+      object:
+      </xsl:text><xsl:element name="xsl:text"><xsl:element name="xsl:value-of"><xsl:attribute name="select"><xsl:apply-templates select="." mode="gen:object-uri"><xsl:with-param name="address" select="$address"/><xsl:with-param name="realaddress" select="$realaddress"/><xsl:with-param name="node" select="$node"/></xsl:apply-templates><xsl:text>/</xsl:text>item</xsl:attribute></xsl:element></xsl:element><xsl:text>
+
+      widget:
+      </xsl:text><xsl:element name="xsl:text"><xsl:value-of select="item"/></xsl:element>
+    
+  </xsl:template>
+
+</xsl:stylesheet>

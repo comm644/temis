@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+  <html>
+	<head>
+	    <title>TEMIS Framework. Installation.</title>
+	  <link rel="stylesheet" type="text/css" href="install.css">
+	</head>
+
+	<body>
+	<div class="wizard">
+	  <h1>
+ <span class='right'>Installation</span>	  TEMIS Framework</h1>
+
+	  <table>
+		<tr>
+		  <td class='info'>
+			 <install:stages>
+					<ul>
+					  <install:stage>
+						<li><span class='{{page-id}} {{active}}'><install:stage-name/></span></li>
+					  </install:stage>
+					</ul>
+			</install:stages>
+		  </td>
+		  <td class='report'>
+				<form name="form" method="POST">
+				  <input type="hidden" name="action" id='action'/>
+			  <install:report/>
+			  
+				<!-- buttons must be after install:report ALWAYS -->
+				  <div class="buttons">
+					
+					<install:error>
+					<!--
+					  <p>
+						Please fix the caused problems and <a href="javascript:window.location.reload();"> reload this page.</a>
+					  </p>
+					  -->
+					</install:error>
+					
+					<install:back>
+					  <input type="submit" value="Back" class='button' onclick="document.getElementById('action').value='back';return true;"/>
+					</install:back>
+					
+					<install:next>
+					  <input type="submit" value="Press to continue setup" class='button' onclick="document.getElementById('action').value='next';return true;"/>
+					</install:next>
+				  </div>
+				</form>
+		  </td>
+		</tr>
+	  </table>
+	  
+	  <install:footer>
+	    <div id="footer">Copyright &copy; 2003-2010, Alexey V. Vasilyev.</div>
+	  </install:footer>
+	  </div>
+	</body>
+  </html>
+
