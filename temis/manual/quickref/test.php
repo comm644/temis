@@ -16,10 +16,11 @@
    limitations under the License.
 
 */
-?><?php
+?>
+<?php
 require_once( dirname( __FILE__ ) . "/../../temis.php" );
 
-$ui = new UIProcessor();
+$ui = new UIProcessor(new TemisSettings );
 
 $xslFile = dirname( __FILE__ ) . "/" . "page1.xsl";
 $xmlFile = dirname( __FILE__ ) . "/" . "page.xml";

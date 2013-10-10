@@ -1,1 +1,4 @@
 .svn
+*.cxsl
+*.deps
+temis/settings/*
