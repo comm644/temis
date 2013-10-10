@@ -1,0 +1,9 @@
+<?xml version="1.0" />
+<package format="1.0">
+	<version>1.0</version>
+	<name>Singleton/Frontend pattern.</name>
+	<description>Provides Singleton and Frontend service for any class. </description>
+	<require/>
+	<provide class="Singleton"/>
+	<provide package="singleton"/>
+</package>

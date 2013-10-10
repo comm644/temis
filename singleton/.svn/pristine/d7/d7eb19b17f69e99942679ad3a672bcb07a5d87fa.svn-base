@@ -1,0 +1,4 @@
+
+all:
+	php runner.php
+
