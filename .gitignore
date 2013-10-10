@@ -2,3 +2,4 @@
 *.cxsl
 *.deps
 temis/settings/*
+singleton/.svn
