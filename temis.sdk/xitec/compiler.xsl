@@ -17,94 +17,44 @@
 
 -->
 <!--
-     Temis.Xitec
-     ===============
+
+     This file contains templates for just copying without processing
      
-    Xml wIdget Template compiler:  
-    
-    Compiler uses very simplest way.
-
-    If you have using in XSLT expressions xpath for retriveing WIDGET information
-    begins from '/widget/'  (for example:  /widget/@attribute)
-    then comiler switches to WIDGET mode and performs copying your
-    template code into output template
-
-    If you have using xpath for getting OBJECT information then compiler
-    switches to GEN (generation) mode and performs generating instruction
-    for creating your code in target template
-
-    If you have using instructions without using address /widget/ or /object/
-    then compiler performs transformations according to current mode.
-    
-    Compiler performs tesing only @test, @select and @name tags of XSLT instructions
-
-    Run:
-    xsltproc compiler.xsl readme.xsl
-
-       
      -->
-<xsl:stylesheet
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:xitec="xitec.dtd"
-  version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:xitec="xitec.dtd"
+                version="1.0">
 
-  
-  <xsl:output method="xml"
-    encoding="utf-8"
-    
-    />
+  <xsl:output method="xml"/>
 
-  <xsl:include href="str-replace.xsl"/>
+  <!-- document copier
 
-  <xsl:variable name="result-readable">yes</xsl:variable>
-  <xsl:variable name="gen-readable">no</xsl:variable>
-  
-  <!-- compile template -->
-  
-  <xsl:include href="mode-doc.xsl"/>
-  <xsl:include href="mode-gen.xsl"/>
-  <xsl:include href="mode-widget.xsl"/>
+       performs copying any document
+       -->
 
-  <xsl:include href="insert-vars.xsl"/>
-  <xsl:include href="gen-macro.xsl"/>
-
-  <xsl:template name="newline">
-<xsl:text>
-</xsl:text>
-  </xsl:template>
-
-  <xsl:template match="xitec:switch-mode" >
-    <xsl:choose>
-      <xsl:when test="@mode='widget'">
-        <xsl:apply-templates select="child::node()" mode="widget"/>
-      </xsl:when>
-      <xsl:when test="@mode='object'">
-        <xsl:apply-templates select="child::node()" mode="gen"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:message terminate="yes">
-          unknown xitec-mode <xsl:value-of select="@mode"/>
-        </xsl:message>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="xitec:switch-mode" mode="widget">
-    <xsl:apply-templates select="."/>
-  </xsl:template>
-
-  <xsl:template match="xitec:switch-mode" mode="gen">
-    <xsl:apply-templates select="."/>
-  </xsl:template>
-
-
-  <!-- print -->
-  <xsl:template match="xitec:print-mode" mode="gen">[xitec:mode=object]</xsl:template>
-  <xsl:template match="xitec:print-mode" mode="widget">[xitec:mode=widget]</xsl:template>
-  <xsl:template match="xitec:print-mode">[xitec:mode=doc]</xsl:template>
 
   <xsl:template match="xsl:include">
     <xsl:apply-templates select="document(@href)/xsl:stylesheet/*"/>
+  </xsl:template>
+
+  <xsl:template match="xitec:include">
+  	<xsl:element name="xsl:include">
+    	<xsl:apply-templates select="@*"/>
+  	</xsl:element>
+  </xsl:template>
+
+  <xsl:template match="/">
+    <xsl:apply-templates/>
+  </xsl:template>
+  
+  <xsl:template match="@*|node()|text()">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()|text()"/>
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="text()">
+    <xsl:copy/>
   </xsl:template>
   
 </xsl:stylesheet>

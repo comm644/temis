@@ -52,91 +52,64 @@
        is not used
 
      -->
-<xsl:stylesheet
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<temis:stylesheet
+  xmlns:temis="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xsl="content://www.w3.org/1999/XSL/Transform"
   xmlns:ui="ui.dtd"
-  xmlns:gen="gen.dtd"
-  xmlns:xitec="xitec.dtd"
-  exclude-result-prefixes="ui gen"
+  exclude-result-prefixes="ui"
   version="1.0">
 
   <!-- UI button generator -->
-  <xsl:template name="ui:radio" match="ui:radio">
-    <xsl:param name="node" select="."/>
+  <temis:template name="ui:radio" match="ui:radio">
+    <temis:variable name="index"><temis:apply-templates select="." mode="gen-index-xpath"/></temis:variable>
+    <temis:variable name="index-id"><temis:apply-templates select="." mode="gen-index-id"/>-<temis:value-of select="@value"/></temis:variable>
+    <temis:variable name="index-name"><temis:apply-templates select="." mode="gen-index-name"/></temis:variable>
 
-    <xsl:param name="/widget/id">
-      <xsl:apply-templates select="." mode="gen:object-id">
-        <xsl:with-param name="context">event</xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:param>
 
-    <xsl:param name="/widget/control-id">
-      <xsl:apply-templates select="." mode="gen:object-id">
-        <xsl:with-param name="inline">yes</xsl:with-param>
-        <xsl:with-param name="context">id</xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:param>
 
-    <xsl:param name="/widget/control-name">
-      <xsl:apply-templates select="." mode="gen:object-id">
-        <xsl:with-param name="inline">yes</xsl:with-param>
-        <xsl:with-param name="context">name</xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:param>
+    <xsl:if test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/visible = 1">
+      <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
+      <input type="radio"
+             id  ="{{$temis-object/__name}}{$index-id}"
+             name="{{$temis-object/__name}}{$index-name}">
 
-    <xsl:apply-templates select="/widget/." mode="gen:test-visibility">
-      <xsl:with-param name="content">
-        <xsl:variable name="wid">
-          <xsl:value-of select="/widget/$control-id"/>_<xsl:value-of select="@value"/>
-        </xsl:variable>
-        
-        <input id="{/widget/$wid}" name="{/widget/$control-name}" type="radio" >
-	  <xsl:apply-templates select="/widget/." mode="gen:copy-attributes"/>
-          <xsl:apply-templates select="/widget/." mode="gen:add-handler">
-	    <xsl:with-param name="context" select="'event'"/>
-            <xsl:with-param name="/widget/event">onclick</xsl:with-param>
-          </xsl:apply-templates>
-          <xsl:apply-templates select="/widget/." mode="gen:add-handler">
-	    <xsl:with-param name="context" select="'event'"/>
-            <xsl:with-param name="/widget/event">onchange</xsl:with-param>
-          </xsl:apply-templates>
+        <temis:apply-templates select="." mode="temis-copy-attributes"/>
+        <temis:apply-templates select="." mode="temis-add-handler">
+          <temis:with-param name="event">onclick</temis:with-param>
+        </temis:apply-templates>
+        <temis:apply-templates select="." mode="temis-add-handler">
+          <temis:with-param name="event">onchange</temis:with-param>
+        </temis:apply-templates>
 
-          
-          <xsl:variable name="/object/value">
-            <xsl:choose>
-              <xsl:when test="contains(/widget/@value, '{')">
-                <xsl:attribute name="select">
-                  <xsl:value-of select="substring-before( substring-after( /widget/@value, '{'), '}')"/>
-                </xsl:attribute>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="/widget/@value"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:variable>
-          <xsl:if test="/object/value = $value">
-            <xsl:attribute name="/object/checked">1</xsl:attribute>
-          </xsl:if>
+        <temis:choose>
+          <temis:when test="contains(@value,'{')">
+            <xsl:variable name="checked">
+              <temis:apply-templates select="@value" mode="gen-index-valueof"/>
+            </xsl:variable>
+            <xsl:if test="$checked = '1'">
+              <xsl:attribute name="checked">1</xsl:attribute>
+            </xsl:if>
+          </temis:when>
+          <temis:when test="@value = '1'">
+            <xsl:attribute name="checked">1</xsl:attribute>
+          </temis:when>
+          <temis:otherwise>
+            <xsl:if test="$temis-object/checked{$index} = '1'">
+              <xsl:attribute name="checked">1</xsl:attribute>
+            </xsl:if>
+          </temis:otherwise>
+        </temis:choose>
+      </input>
 
-          <xsl:attribute name="/object/value">
-            <xsl:value-of select="/object/$value"/>
-          </xsl:attribute>
-        </input>
-        
-        <xsl:if test="count( /widget/@ui:caption ) != 0">
-          <a style="text-decoration: none; {@ui:caption-style}" class="{@ui:caption-class}" title="{@ui:caption-title}" href="javascript:void(0);">
-            <xsl:attribute name="/object/onclick">
-              <xsl:call-template name="/widget/gen:replace-braces">
-                <xsl:with-param name="text">
-                  <xsl:text/>javascript:_temis.clickWidget('<xsl:value-of select="/widget/$wid"/>');void(0);<xsl:text/>
-                </xsl:with-param>
-              </xsl:call-template>
-            </xsl:attribute>
-            <xsl:apply-templates mode="ui:message" select="/widget/@ui:caption"/>
-          </a>
-        </xsl:if>
-      </xsl:with-param>
-    </xsl:apply-templates>
-  </xsl:template>
+      <temis:if test="count( @ui:caption ) != 0">
+        <label id="{{$temis-object/__name}}{$index-id}-label" for="{{$temis-object/__name}}{$index-id}"
+               style="{@ui:caption-style}" class="{@ui:caption-class}">
 
-</xsl:stylesheet>
+          <temis:apply-templates mode="ui:message" select="@ui:caption"/>
+        </label>
+      </temis:if>
+
+    </xsl:if>
+  </temis:template>
+
+</temis:stylesheet>

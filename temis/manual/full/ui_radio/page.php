@@ -48,6 +48,10 @@ class pageTestRadio extends uiPage
 		$this->radioInvisible->visible = false;
 
 		$this->radioVisible = new uiRadioButton();
+
+		$this->items[] = "variant 1";
+		$this->items[] = "variant 2";
+		$this->items[] = "variant 3";
 	}
 
 	function onclick()
@@ -66,7 +70,13 @@ class pageTestRadio extends uiPage
 	{
 		Diag::update( $this );
 	}
-	
+
+	static function getStateManager()
+	{
+		return PageState::inView();
+	}
+
+
 }
 
 temis::runpage(  "pageTestRadio" );

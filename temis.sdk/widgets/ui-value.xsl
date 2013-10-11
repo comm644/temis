@@ -43,49 +43,31 @@
        is not used
 
      -->
-<xsl:stylesheet
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<temis:stylesheet
+  xmlns:temis="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xsl="content://www.w3.org/1999/XSL/Transform"
   xmlns:ui="ui.dtd"
-  xmlns:gen="gen.dtd"
-  exclude-result-prefixes="ui gen"
+  exclude-result-prefixes="ui "
   version="1.0">
 
   <!-- UI input text generator -->
-  <xsl:template match="ui:value">
-    <xsl:param name="/widget/control-id">
-      <xsl:apply-templates select="." mode="gen:object-id">
-        <xsl:with-param name="inline">yes</xsl:with-param>
-        <xsl:with-param name="context">id</xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:param>
-    
-    <xsl:param name="/widget/control-name">
-      <xsl:apply-templates select="." mode="gen:object-id">
-        <xsl:with-param name="inline">yes</xsl:with-param>
-        <xsl:with-param name="context">name</xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:param>
-    
-    <input id="{/widget/$control-id}" name="{/widget/$control-name}" type="hidden"  >
-      <xsl:variable name="/object/value">
-        <xsl:choose>
-          <xsl:when test="count(/widget/@value) = 0">
-            <xsl:value-of select="/object/value"/>
-          </xsl:when>
-          <xsl:when test="contains(/widget/@value, '{')">
-            <xsl:attribute name="select">
-              <xsl:value-of select="substring-before( substring-after( /widget/@value, '{'), '}')"/>
-            </xsl:attribute>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="/widget/@value"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
+  <temis:template match="ui:value">
+    <temis:variable name="index-id"><temis:apply-templates select="." mode="gen-index-id"/></temis:variable>
+    <temis:variable name="index-name"><temis:apply-templates select="." mode="gen-index-name"/></temis:variable>
 
-      <xsl:attribute name="/object/value"><xsl:value-of select="/object/$value"/></xsl:attribute>
-    </input>
-  </xsl:template>
-  
+    <xsl:if test="1 = 1">
+      <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
+      <input type="hidden"
+             id  ="{{$temis-object/__name}}{$index-id}"
+             name="{{$temis-object/__name}}{$index-name}">
 
-</xsl:stylesheet>
+        <temis:apply-templates select="." mode="temis-copy-attributes"/>
+
+        <xsl:attribute name="value"><xsl:value-of select="value"/></xsl:attribute>
+        <!-- insert user code here  -->
+        <temis:apply-templates select="*"/>
+      </input>
+    </xsl:if>
+
+  </temis:template>
+</temis:stylesheet>

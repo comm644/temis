@@ -54,99 +54,98 @@
        is not used
 
      -->
-<xsl:stylesheet
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<temis:stylesheet
+  xmlns:temis="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xsl="content://www.w3.org/1999/XSL/Transform"
   xmlns:ui="ui.dtd"
-  xmlns:gen="gen.dtd"
-  xmlns:xitec="xitec.dtd"
-  exclude-result-prefixes="ui gen"
+  exclude-result-prefixes="ui"
   version="1.0">
 
   <!-- UI button generator -->
-  <xsl:template name="ui:checkbox" match="ui:checkbox">
-    <xsl:param name="node" select="."/>
-    <xsl:param name="/widget/id"><xsl:apply-templates select="." mode="gen:sender-id"/></xsl:param>
-    <xsl:param name="/widget/control-id"><xsl:apply-templates select="." mode="gen:control-id"/></xsl:param>
-    <xsl:param name="/widget/control-name"><xsl:apply-templates select="." mode="gen:control-name"/></xsl:param>
+  <temis:template name="ui:checkbox" match="ui:checkbox">
+    <temis:variable name="index"><temis:apply-templates select="." mode="gen-index-xpath"/></temis:variable>
+    <temis:variable name="index-id"><temis:apply-templates select="." mode="gen-index-id"/></temis:variable>
+    <temis:variable name="index-name"><temis:apply-templates select="." mode="gen-index-name"/></temis:variable>
 
-    <xsl:apply-templates select="/widget/." mode="gen:test-visibility">
-      <xsl:with-param name="content">
-        <input id="{/widget/$control-id}" name="{/widget/$control-name}" type="checkbox" >
-          <!-- copy attributes  -->
-	  <xsl:apply-templates select="/widget/." mode="gen:copy-attributes"/>
-          
-          <xsl:apply-templates select="/widget/." mode="gen:add-handler">
-            <xsl:with-param name="/widget/event">onclick</xsl:with-param>
-          </xsl:apply-templates>
-          <xsl:apply-templates select="/widget/." mode="gen:add-handler">
-            <xsl:with-param name="/widget/event">onchange</xsl:with-param>
-          </xsl:apply-templates>
 
-          <xsl:variable name="/widget/checkgroup-onclick">
-            <xsl:if test="count(/widget/@ui:group) !=0">
-              <xsl:text/>_checkgroup.clickMember(this);<xsl:text/>
+
+    <xsl:if test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/visible = 1">
+      <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
+      <input type="checkbox"
+             id  ="{{$temis-object/__name}}{$index-id}"
+             name="{{$temis-object/__name}}{$index-name}">
+
+        <temis:apply-templates select="." mode="temis-copy-attributes"/>
+        <temis:apply-templates select="." mode="temis-add-handler">
+          <temis:with-param name="event">onclick</temis:with-param>
+        </temis:apply-templates>
+        <temis:apply-templates select="." mode="temis-add-handler">
+          <temis:with-param name="event">onchange</temis:with-param>
+        </temis:apply-templates>
+
+
+        <temis:variable name="checkgroup-onclick">
+          <temis:if test="count(@ui:group) !=0">
+            <temis:text/>_checkgroup.clickMember(this);<temis:text/>
+          </temis:if>
+          <temis:if test="count(@ui:group-handler) !=0">
+            <temis:text/>_checkgroup.clickRoot(this);<temis:text/>
+          </temis:if>
+        </temis:variable>
+
+        <temis:if test="$checkgroup-onclick != ''">
+          <xsl:attribute name="onclick">
+            <temis:value-of select="$checkgroup-onclick"/>
+          </xsl:attribute>
+        </temis:if>
+
+        <temis:choose>
+          <temis:when test="contains(@value,'{')">
+            <xsl:variable name="checked">
+              <temis:apply-templates select="@value" mode="gen-index-valueof"/>
+            </xsl:variable>
+            <xsl:if test="$checked = '1'">
+              <xsl:attribute name="checked">1</xsl:attribute>
             </xsl:if>
-            <xsl:if test="count(/widget/@ui:group-handler) !=0">
-              <xsl:text/>_checkgroup.clickRoot(this);<xsl:text/>
+          </temis:when>
+          <temis:when test="@value = '1'">
+            <xsl:attribute name="checked">1</xsl:attribute>
+          </temis:when>
+          <temis:otherwise>
+            <xsl:if test="$temis-object/checked{$index} = '1'">
+              <xsl:attribute name="checked">1</xsl:attribute>
             </xsl:if>
-          </xsl:variable>
+          </temis:otherwise>
+        </temis:choose>
+      </input>
 
-          <xsl:if test="/widget/$checkgroup-onclick != ''">
-            <xsl:attribute name="/object/onclick">
-              <xsl:value-of select="/widget/$checkgroup-onclick"/>
-            </xsl:attribute>
-          </xsl:if>
-          
-          <xsl:variable name="/object/value">
-            <xsl:apply-templates select="/widget/." mode="gen-selected">
-              <xsl:with-param name="/widget/object-value" select="'checked'"/>
-            </xsl:apply-templates>
-          </xsl:variable>
-          <xsl:if test="/object/$value = '1'">
-            <xsl:attribute name="/object/checked">1</xsl:attribute>
-          </xsl:if>
-          
-        </input>
+      <temis:if test="count( @ui:caption ) != 0">
+        <label id="{{$temis-object/__name}}{$index-id}-label" for="{{$temis-object/__name}}{$index-id}"
+               style="{@ui:caption-style}" class="{@ui:caption-class}">
 
-        <xsl:if test="count( /widget/@ui:caption ) != 0">
-          <a style="text-decoration: none; {@ui:caption-style}" class="{@ui:caption-class}">
-            <xsl:attribute name="/object/href">
-              <xsl:call-template name="/widget/gen:replace-braces">
-                <xsl:with-param name="text">
-                  <xsl:text/>javascript:_temis.clickWidget('<xsl:value-of select="/widget/$control-id"/>');void(0);<xsl:text/>
-                </xsl:with-param>
-              </xsl:call-template>
-            </xsl:attribute>
-            <xsl:apply-templates mode="ui:message" select="/widget/@ui:caption"/>
-          </a>
-        </xsl:if>
+          <temis:apply-templates mode="ui:message" select="@ui:caption"/>
+        </label>
+      </temis:if>
 
-        <xsl:if test="count(/widget/@ui:group) !=0">
-          <script language="javascript">
-            <xsl:call-template name="/widget/gen:replace-braces">
-              <xsl:with-param name="text">
-                <xsl:text/>_checkgroup.registerMember( '<xsl:text/>
-                <xsl:value-of select="/widget/$control-id"/>', '<xsl:value-of select="/widget/@ui:group"/>');<xsl:text/>
-              </xsl:with-param>
-            </xsl:call-template>
-          </script>
-        </xsl:if>
-        
-        <xsl:if test="count(/widget/@ui:group-handler) !=0">
-          <script language="javascript">
-            <xsl:call-template name="/widget/gen:replace-braces">
-              <xsl:with-param name="text">
-                <xsl:text/>_checkgroup.registerRoot( '<xsl:text/>
-                <xsl:value-of select="/widget/$control-id"/>', '<xsl:value-of select="/widget/@ui:group-handler"/>');<xsl:text/>
-              </xsl:with-param>
-            </xsl:call-template>
-          </script>
-        </xsl:if>
-        
-        
-        
-      </xsl:with-param>
-    </xsl:apply-templates>
-  </xsl:template>
 
-</xsl:stylesheet>
+      <script>
+        <xsl:variable name="temis-object-id">
+          <xsl:value-of select="$temis-object/__name"/>
+          <temis:if test="count(@ui:index) !=0 ">-</temis:if>
+          <temis:apply-templates select="@ui:index" mode="gen-index-valueof"/>
+        </xsl:variable>
+
+        <temis:if test="count(@ui:group) != 0">
+          <temis:text/>_checkgroup.registerMember( '<xsl:value-of select="$temis-object-id"/>',<temis:text/>
+          <temis:text/>'<temis:apply-templates select="@ui:group" mode="gen-index-valueof"/>');<temis:text/>
+        </temis:if>
+
+        <temis:if test="count(@ui:group-handler) != 0">
+          <temis:text/>_checkgroup.registerRoot( '<xsl:value-of select="$temis-object-id"/>', '<temis:text/>
+          <temis:text/><temis:apply-templates select="@ui:group-handler" mode="gen-index-valueof"/>');<temis:text/>
+        </temis:if>
+      </script>
+    </xsl:if>
+  </temis:template>
+
+</temis:stylesheet>

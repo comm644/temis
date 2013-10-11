@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!-- 
 
    Copyright (c) 2008 Alexey V. Vasilyev
@@ -16,62 +16,57 @@
    limitations under the License.
 
 -->
-<xsl:stylesheet
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:gen="gen.dtd"
-  xmlns:ui="ui.dtd"
-                version="1.0">
+<temis:stylesheet
+    xmlns:temis="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xsl="content://www.w3.org/1999/XSL/Transform"
+    xmlns:gen="gen.dtd"
+    xmlns:ui="ui.dtd" version="1.0">
 
-  <xsl:template match="ui:msg|ui:message" >
-    <xsl:apply-templates mode="ui:message" select="@id"/>
-  </xsl:template>
+  <temis:template match="ui:msg|ui:message" >
+    <temis:apply-templates mode="ui:message" select="@id"/>
+  </temis:template>
 
-  <xsl:template name="ui:msg" >
-    <xsl:param name="id"/>
-    <xsl:apply-templates mode="ui:message" select="$id"/>
-  </xsl:template>
-  <xsl:template name="ui:message">
-    <xsl:param name="id"/>
-    <xsl:apply-templates mode="ui:message" select="$id"/>
-  </xsl:template>
+  <temis:template name="ui:msg" >
+    <temis:param name="id"/>
+    <temis:apply-templates mode="ui:message" select="$id"/>
+  </temis:template>
+
+  <temis:template name="ui:message">
+    <temis:param name="id"/>
+    <temis:apply-templates mode="ui:message" select="$id"/>
+  </temis:template>
+
+  <temis:template match="@*|text()" mode="ui:message">
+    <temis:param name="id" select="."/>
+    <temis:variable name="file" select="//ui:messages/@href"/>
+    <temis:variable name="section" select="//ui:messages/@section"/>
+
+    <temis:variable name="clean-id"><temis:apply-templates select="$id" mode="gen:strip-braces"/></temis:variable>
+    <temis:variable name="document" select="document( $file )"/>
+
+    <temis:variable name="text">
+      <temis:choose>
+        <temis:when test="string( $section ) = ''">
+          <temis:value-of select="$document//*[name() = $clean-id]"/>
+        </temis:when>
+        <temis:otherwise>
+          <temis:value-of select="$document//*[name() = $section]/*[name() = $clean-id]"/>
+        </temis:otherwise>
+      </temis:choose>
+    </temis:variable>
+
+    <temis:choose>
+      <temis:when test="$text != ''"><temis:value-of select="$text"/></temis:when>
+      <temis:otherwise>
+        <temis:choose>
+          <temis:when test="contains($id, '{')"><xsl:value-of select="{$clean-id}"/></temis:when>
+          <temis:otherwise><temis:value-of select="$clean-id"/></temis:otherwise>
+        </temis:choose>
+      </temis:otherwise>
+    </temis:choose>
+  </temis:template>
+
+  <temis:template match="ui:messages">
+  </temis:template>
   
-  <xsl:template match="@*|text()" mode="ui:message">
-    <xsl:param name="id" select="."/>
-    <xsl:variable name="file" select="//ui:messages/@href"/>
-    <xsl:variable name="section" select="//ui:messages/@section"/>
-
-    <xsl:variable name="clean-id"><xsl:apply-templates select="$id" mode="gen:strip-braces"/></xsl:variable>
-    <xsl:variable name="document" select="document( $file )"/>
-    
-    <xsl:variable name="text">
-      <xsl:choose>
-        <xsl:when test="string( $section ) = ''">
-          <xsl:value-of select="$document//*[name() = $clean-id]"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$document//*[name() = $section]/*[name() = $clean-id]"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    
-    <xsl:choose>
-      <xsl:when test="$text != ''"><xsl:value-of select="$text"/></xsl:when>
-      <xsl:otherwise>
-        <xsl:choose>
-          <xsl:when test="contains($id, '{')">
-            <xsl:element name="xsl:value-of">
-              <xsl:attribute name="select">
-                <xsl:value-of select="$clean-id"/>
-              </xsl:attribute>
-            </xsl:element>
-          </xsl:when>
-          <xsl:otherwise><xsl:value-of select="$clean-id"/></xsl:otherwise>
-        </xsl:choose>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="ui:messages">
-  </xsl:template>
-  
-</xsl:stylesheet>
+</temis:stylesheet>

@@ -16,7 +16,8 @@
    limitations under the License.
 
 */
-?><?php
+?>
+<?php
 /******************************************************************************
  Copyright (c) 2005-2008 by Alexei V. Vasilyev.  All Rights Reserved.
  -----------------------------------------------------------------------------
@@ -150,12 +151,19 @@ class UIProcessor
 		}
 
 		$result = $proc->transform( $source );
+		$xml = $result->saveXML();
+		$xml = str_replace('xmlns:xsl="content://www.w3.org/1999/XSL/Transform"', '' , $xml);
+
+		$result = new DOMDocument();
+		$result->loadXML($xml);
 
 		if ( $result === FALSE ) {
 			trigger_error("TEMIS Error: XSLT error on compiling $templateName", E_USER_ERROR);
 			exit;
 		}
-		
+
+
+
 		if ( $signSave ) {
 			$this->saveCompiled( $proc, $result, $templateName );
 		}

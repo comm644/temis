@@ -44,23 +44,21 @@
          />
          
      -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:gen="gen.dtd"
+<temis:stylesheet xmlns:temis="http://www.w3.org/1999/XSL/Transform"
+                  xmlns:xsl="content://www.w3.org/1999/XSL/Transform"
   xmlns:ui="ui.dtd"
                 version="1.0">
 
 
-  <xsl:template match="ui:visible">
-    <xsl:param name="node" select="."/>
+  <temis:template match="ui:visible[@ui:visibility = 'no']"/>
 
-    <xsl:apply-templates select="/widget/." mode="gen:test-visibility">
-      <xsl:with-param name="content">
-        
-        <!-- insert user code here  -->
-        <xsl:apply-templates select="/widget/*|text()"/>
-        
-      </xsl:with-param>
-    </xsl:apply-templates>
-  </xsl:template>
+  <temis:template match="ui:visible[@ui:visibility = 'yes']">
+    <temis:apply-templates select="*|text()"/>
+  </temis:template>
 
-</xsl:stylesheet>
+  <temis:template match="ui:visible[@ui:visibility = 'test' or count(@ui:visibility) = 0]">
+      <!-- insert user code here  -->
+      <temis:apply-templates select="*|text()"/>
+  </temis:template>
+
+</temis:stylesheet>

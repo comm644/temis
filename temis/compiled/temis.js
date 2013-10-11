@@ -201,6 +201,11 @@ function temis( formName )
 {
 	this.submitted = false;
 
+    this.doEvent = function(sender,event,receiver,index, target, targetIndex, targetWindow) 
+    {
+      _temis.sendMessage(sender, _temis.createEvent(event, receiver,index), _temis.createTarget(target, targetIndex, targetWindow) );
+    }
+    
 	this.createEvent = function( event, receiver, index )
 		{
 			return new Event( event, receiver, index );

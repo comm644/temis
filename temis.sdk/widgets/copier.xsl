@@ -16,27 +16,24 @@
    limitations under the License.
 
 -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<temis:stylesheet xmlns:temis="http://www.w3.org/1999/XSL/Transform"
+                xmlns:ui="ui.dtd"
                 version="1.0">
 
 
   <!-- document copier     -->
-  <xsl:template match="@ui:tooltip"><xsl:attribute name="title"><xsl:apply-templates mode="ui:message" select="."/></xsl:attribute></xsl:template>
+  <temis:template match="@*|node()">
+    <temis:copy>
+      <temis:apply-templates select="@*"/>
+      <temis:apply-templates select="node()"/>
+    </temis:copy>
+  </temis:template>
 
-  <xsl:template match="@*|node()">
-    <xsl:copy>
-      <xsl:apply-templates select="@*"/>
-      <xsl:apply-templates select="node()"/>
-    </xsl:copy>
-  </xsl:template>
+  <temis:template match="/">
+    <temis:copy>
+      <temis:apply-templates select="@*"/>
+      <temis:apply-templates select="node()"/>
+    </temis:copy>
+  </temis:template>
 
-  <xsl:template match="/">
-    <xsl:param name="address">$ui-page</xsl:param>
-    <xsl:param name="realaddress">/root/page</xsl:param>
-    <xsl:copy>
-      <xsl:apply-templates select="@*"/>
-      <xsl:apply-templates select="node()"/>
-    </xsl:copy>
-  </xsl:template>
-
-</xsl:stylesheet>
+</temis:stylesheet>

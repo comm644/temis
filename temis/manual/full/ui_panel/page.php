@@ -75,6 +75,10 @@ class pageTestPanel extends uiPage
 	}
 }
 
-temis::runpage(  "pageTestPanel" );
+$temis = new Temis();
+$temis->settings->showLogo = false;
+$temis->settings->saveCompiledTemplate = true;
+$temis->settings->saveXmlTree= true;
+$temis->runpage(  "pageTestPanel" );
 
 ?>

@@ -16,7 +16,8 @@
    limitations under the License.
 
 */
-?><?php
+?>
+<?php
 
 require_once( dirname( __FILE__ ) . "/../phpmake/make.php" );
 require_once( dirname( __FILE__ ) . "/../xitec/xitec.php" );
@@ -44,9 +45,9 @@ class widgets extends task
 class clean extends task
 {
 	function isphony() { return true; }
-	function execute()
+	function execute($target, $deps)
 	{
-		unlink( widgets::target() );
+		unlink( WIDRESULT );
 	}
 }
 

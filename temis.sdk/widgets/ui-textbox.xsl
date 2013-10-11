@@ -50,113 +50,96 @@
        is not used
 
      -->
-<xsl:stylesheet
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:ui="ui.dtd"
-  xmlns:gen="gen.dtd"
-  xmlns:xitec="xitec.dtd"
-  exclude-result-prefixes="ui gen"
-  version="1.0">
+<temis:stylesheet
+    xmlns:temis="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xsl="content://www.w3.org/1999/XSL/Transform"
+    xmlns:ui="ui.dtd" xmlns:Xsl="http://www.w3.org/1999/XSL/Transform"
+    exclude-result-prefixes="ui"
+    version="1.0">
 
-  <xsl:template match="*" mode="insert-variable-for-value-of">
-    <xsl:variable name="/object/value">
-      <xsl:apply-templates select="/widget/." mode="gen-selected">
-        <xsl:with-param name="/widget/object-value" select="'text'"/>
-      </xsl:apply-templates>
-      <!--
-      <xsl:choose>
-        <xsl:when test="count(/widget/@value) = 0">
-          <xsl:value-of select="/object/text"/>
-        </xsl:when>
-        <xsl:when test="contains(/widget/@value, '{')">
-          <xsl:attribute name="select">
-            <xsl:value-of select="substring-before( substring-after( /widget/@value, '{'), '}')"/>
-          </xsl:attribute>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="/widget/@value"/>
-        </xsl:otherwise>
-      </xsl:choose>
-      -->
-    </xsl:variable>
-   
-  </xsl:template>
-  
-  <!-- UI button generator -->
-  <xsl:template name="ui:textbox" match="ui:textbox">
-    <xsl:param name="node" select="."/>
+  <temis:include href="xsl-copier.xsl"/>
+  <temis:include href="gen-index.xsl"/>
 
-    <xsl:param name="/widget/id">
-      <xsl:apply-templates select="." mode="gen:object-id">
-        <xsl:with-param name="context">event</xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:param>
+  <temis:output indent="yes"/>
+  <temis:template match="ui:page">
+    ---------------
+  </temis:template>
 
-    <xsl:param name="/widget/control-id">
-      <xsl:apply-templates select="." mode="gen:object-id">
-        <xsl:with-param name="inline">yes</xsl:with-param>
-        <xsl:with-param name="context">id</xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:param>
+  <!-- UI textbox generator -->
+  <temis:template match="ui:textbox[@ui:visibility='no']"/>
+  <temis:template name="ui:textbox" match="ui:textbox">
+    <!--
+    1. check hardcoded  visibility
+    2. create node
+    3. copy HTML attributes to node
+    4. call temis runtime
 
-    <xsl:param name="/widget/control-name">
-      <xsl:apply-templates select="." mode="gen:object-id">
-        <xsl:with-param name="inline">yes</xsl:with-param>
-        <xsl:with-param name="context">name</xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:param>
+    path:  page/widget/element
+    -->
+    <temis:variable name="mode">
+      <temis:choose>
+        <temis:when test="count(@ui:mode ) = 0">text</temis:when>
+        <temis:when test="@ui:mode = 'text'">text</temis:when>
+        <temis:when test="@ui:mode = 'multiline'">multiline</temis:when>
+        <temis:when test="@ui:mode = 'password'">password</temis:when>
+        <temis:otherwise>
+          <temis:message terminate="yes">
+            <temis:text/>Error: Invalid @ui:mode for <temis:copy-of select="."/>
+          </temis:message>
+        </temis:otherwise>
+      </temis:choose>
+    </temis:variable>
 
-    <xsl:apply-templates select="/widget/." mode="gen:test-visibility">
-      <xsl:with-param name="content">
+    <temis:variable name="index"><temis:apply-templates select="." mode="gen-index-xpath"/></temis:variable>
+    <temis:variable name="index-id"><temis:apply-templates select="." mode="gen-index-id"/></temis:variable>
+    <temis:variable name="index-name"><temis:apply-templates select="." mode="gen-index-name"/></temis:variable>
 
-        <xsl:variable name="/widget/mode">
-          <xsl:choose>
-            <xsl:when test="count(/widget/@ui:mode ) = 0">text</xsl:when>
-            <xsl:when test="/widget/@ui:mode = 'text'">text</xsl:when>
-            <xsl:when test="/widget/@ui:mode = 'multiline'">multiline</xsl:when>
-            <xsl:when test="/widget/@ui:mode = 'password'">password</xsl:when>
-            <xsl:otherwise>
-              <xsl:message terminate="yes">
-                <xsl:text/>Error: Invalid @ui:mode for <xsl:copy-of select="."/>
-              </xsl:message>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
 
-        
-        <xsl:choose>
-          <xsl:when test="/widget/$mode = 'multiline'">
-            <textarea id="{/widget/$control-id}" name="{/widget/$control-name}" >
-              <xsl:apply-templates select="/widget/." mode="gen:copy-attributes"/>
-              <!--
-              <xsl:if test="count( /widget/@rows ) != 0">
-                <xsl:attribute name="rows"><xsl:value-of select="@rows"/></xsl:attribute>
-              </xsl:if>
-              <xsl:if test="count( /widget/@cols ) != 0">
-                <xsl:attribute name="cols"><xsl:value-of select="@cols"/></xsl:attribute>
-              </xsl:if>
-              -->
+    <xsl:if test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/visible = 1">
+      <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
+      <temis:choose>
+        <temis:when test="$mode = 'multiline'">
+          <textarea
+              id  ="{{$temis-object/__name}}{$index-id}"
+              name="{{$temis-object/__name}}{$index-name}">
 
-              <xsl:apply-templates select="." mode="insert-variable-for-value-of"/>
-              <xsl:value-of select="/object/$value"/>
-            </textarea>
-          </xsl:when>
-          <xsl:otherwise>
-            <input id="{/widget/$control-id}" name="{/widget/$control-name}" type="{$mode}" >
-              <xsl:apply-templates select="/widget/." mode="gen:copy-attributes"/>
-              
-              <xsl:apply-templates select="/widget/." mode="gen:add-handler">
-                <xsl:with-param name="/widget/event">onchange</xsl:with-param>
-              </xsl:apply-templates>
+            <temis:apply-templates select="." mode="ui-textbox-content"/>
 
-              <xsl:apply-templates select="." mode="insert-variable-for-value-of"/>
-              <xsl:attribute name="/object/value"><xsl:value-of select="/object/$value"/></xsl:attribute>
-            </input>
-          </xsl:otherwise>
-        </xsl:choose>
-        
-      </xsl:with-param>
-    </xsl:apply-templates>
-  </xsl:template>
+            <temis:choose>
+              <temis:when test="count(@value) = 0">
+                <xsl:value-of select="$temis-object/text{$index}"/>
+              </temis:when>
+              <temis:otherwise>
+                <temis:apply-templates select="@value" mode="gen-index-valueof"/>
+              </temis:otherwise>
+            </temis:choose>
+          </textarea>
+        </temis:when>
+        <temis:otherwise>
+          <input type="{$mode}"
+                 id  ="{{$temis-object/__name}}{$index-id}"
+                 name="{{$temis-object/__name}}{$index-name}">
 
-</xsl:stylesheet>
+            <temis:apply-templates select="." mode="ui-textbox-content"/>
+
+            <temis:if test="count(@value) = 0">
+              <xsl:attribute name="value">
+                <xsl:value-of select="$temis-object/text{$index}"/>
+              </xsl:attribute>
+            </temis:if>
+
+          </input>
+        </temis:otherwise>
+      </temis:choose>
+    </xsl:if>
+  </temis:template>
+
+
+  <temis:template match="*" mode="ui-textbox-content">
+    <temis:apply-templates select="." mode="temis-copy-attributes"/>
+    <temis:apply-templates select="." mode="temis-add-handler">
+      <temis:with-param name="event">onchange</temis:with-param>
+    </temis:apply-templates>
+  </temis:template>
+
+</temis:stylesheet>

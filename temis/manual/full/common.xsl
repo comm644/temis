@@ -62,6 +62,10 @@
     <h2>PHP Code </h2>
     <xsl:value-of disable-output-escaping="yes" select="code"/>
     
+    <h2>XSLT Code </h2>
+    <div style="white-space: pre;">
+    <xsl:value-of disable-output-escaping="yes" select="template"/>
+    </div>
 
     
     <h2>Page object</h2>

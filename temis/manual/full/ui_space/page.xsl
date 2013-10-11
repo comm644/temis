@@ -35,37 +35,43 @@
 
         <h2>Using xsl:text - does not work.</h2>
         <div>
-          <pre><![CDATA[text&lt;<xsl:text disable-output-escaping="yes">]]><span class="red"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;]]></span><![CDATA[</xsl:text>&gt;text]]></pre>
-          text&lt;
+          <pre><![CDATA[text|<xsl:text disable-output-escaping="yes">]]><span class="red"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;]]></span><![CDATA[</xsl:text>|text]]></pre>
+          <pre>
+          <xsl:text>text|</xsl:text>
           <xsl:text disable-output-escaping="yes">&nbsp;&nbsp;&nbsp;&nbsp;</xsl:text>
-          &gt;text
+          <xsl:text>|text</xsl:text>
+          </pre>
         </div>
 
         <h2>Using direct inserting - does not work.</h2>
-        <pre><![CDATA[text&lt;]]><span class="red"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;]]></span><![CDATA[&gt;text]]></pre>
+        <pre><![CDATA[text|]]><span class="red"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;]]></span><![CDATA[|text]]></pre>
         <div>
-          text&lt;
+          text|
           &nbsp;&nbsp;&nbsp;&nbsp;
-          &gt;text
+          |text
         </div>
 
         <h2>Using ui:nbsp - works</h2>
 
-        <pre><![CDATA[text&lt;]]><span class="red"><![CDATA[<ui:nbsp/>]]></span><![CDATA[<ui:nbsp/><ui:nbsp/><ui:nbsp/>&gt;text]]></pre>
+        <pre><![CDATA[text|]]><span class="red"><![CDATA[<ui:nbsp/>]]></span><![CDATA[<ui:nbsp/><ui:nbsp/><ui:nbsp/>|text]]></pre>
         <div>
 
-          text&lt;<ui:nbsp/><ui:nbsp/><ui:nbsp/><ui:nbsp/>&gt;text
+          text|<ui:nbsp/><ui:nbsp/><ui:nbsp/><ui:nbsp/>|text
         </div>
 
         <h2>Using ui:space - works</h2>
         <pre>
           <![CDATA[text&lt;]]><span class="red"><![CDATA[<ui:space/>]]></span><![CDATA[<ui:space/><ui:space/><ui:space/>&gt;text]]>
         </pre>
+        text|<ui:space/><ui:space/><ui:space/><ui:space/>|text
 
-<div>
-          text&lt;
-          <ui:space/><ui:space/><ui:space/><ui:space/>
-          &gt;text
+        <h2>Using &amp;#160 - works</h2>
+        <pre>
+          <![CDATA[text|&#160;&#160;&#160;&#160;|text]]>
+        </pre>
+
+        <div>
+          text|&#160;&#160;&#160;&#160;|text
         </div>
 		
         <xsl:call-template name="insert-footer"/>

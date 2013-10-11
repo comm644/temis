@@ -40,7 +40,7 @@ class uiWidget extends uiControl
 		foreach( $members as $name => $value ) {
 			if ( !is_object( $this->$name ) ) continue;
 			if ( !is_subclass_of( $this->$name, CLASS_uiWidget ) ) continue;
-			$this->$name->onLoad( new Sender( 'widget', $this ), $name );
+			$this->$name->onLoad( new Sender( 'widget', $this ), $this->{$name}->__name );
 		}
 	}
 

@@ -65,6 +65,7 @@
 <ui:button id="btnOK" ]]><span class="red">ui:caption="{$caption}</span><![CDATA["/>
         ]]></pre>
 
+        <xsl:variable name="caption" select="'my caption'"/>
         <ui:button id="btnOK" ui:caption="{$caption}"/>
 
         <h3>Set caption from program</h3>

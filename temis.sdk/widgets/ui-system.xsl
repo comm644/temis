@@ -16,12 +16,11 @@
    limitations under the License.
 
 -->
-<xsl:stylesheet
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<temis:stylesheet
+  xmlns:temis="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xsl="content://www.w3.org/1999/XSL/Transform"
   xmlns:ui="ui.dtd"
-  xmlns:gen="gen.dtd"
-  xmlns:xitec="xitec.dtd"
-  exclude-result-prefixes="ui gen xitec"
+  exclude-result-prefixes="ui"
   version="1.0">
 
 
@@ -30,54 +29,54 @@
 
 
   <!-- process includes -->
-  <xsl:template match="xsl:include">
-    <xsl:variable name="doc" select="document( current()/@href )"/>
-    <xsl:apply-templates select="$doc/xsl:stylesheet/*[ name() = 'xsl:include' ]"/>
-    <xsl:apply-templates select="$doc/xsl:stylesheet/*[ name() = 'xsl:variable' ]"/>
-    <xsl:apply-templates select="$doc/xsl:stylesheet/*[ name() = 'xsl:template' ]"/>
-    <xsl:apply-templates select="$doc/xsl:stylesheet/*[ name() = 'ui:panel' ]"/>
-  </xsl:template>
+  <temis:template match="temis:include">
+    <temis:variable name="doc" select="document( current()/@href )"/>
+    <temis:apply-templates select="$doc/temis:stylesheet/*[ name() = 'xsl:include' ]"/>
+    <temis:apply-templates select="$doc/temis:stylesheet/*[ name() = 'xsl:variable' ]"/>
+    <temis:apply-templates select="$doc/temis:stylesheet/*[ name() = 'xsl:template' ]"/>
+    <temis:apply-templates select="$doc/temis:stylesheet/*[ name() = 'ui:panel' ]"/>
+    <temis:apply-templates select="$doc/temis:stylesheet/*[ name() = 'ui:widget' ]"/>
+  </temis:template>
 
   <!-- process body  -->
-  <xsl:template match="body">
-    <xsl:copy>
-      <xsl:apply-templates select="@*"/>
-      <xsl:choose>
-        <xsl:when test="count( @ui:manual-control ) = 0 or @manual-control = 'no'">
-          <xsl:call-template name="gen:newline"/>
+  <temis:template match="body">
+    <temis:copy>
+      <temis:apply-templates select="@*"/>
+      <temis:choose>
+        <temis:when test="count( @ui:manual-control ) = 0 or @manual-control = 'no'">
           <form onsubmit="return _temis.submit();" name="_main" method="POST" enctype="multipart/form-data" accept-charset="UTF-8">
-            <xsl:call-template name="ui:sys-script"/>
-            <xsl:call-template name="ui:sys-values"/>
-            <xsl:apply-templates select="node()"/>
+            <temis:call-template name="ui:sys-script"/>
+            <temis:call-template name="ui:sys-values"/>
+            <temis:apply-templates select="node()"/>
           </form>
-        </xsl:when>
-        <xsl:when test="@ui:manual-control = 'yes'">
-          <xsl:apply-templates select="node()"/>
-        </xsl:when>
-      </xsl:choose>
-    </xsl:copy>
-  </xsl:template>
+        </temis:when>
+        <temis:when test="@ui:manual-control = 'yes'">
+          <temis:apply-templates select="node()"/>
+        </temis:when>
+      </temis:choose>
+    </temis:copy>
+  </temis:template>
 
   <!-- /XSL copier -->
 
 
   <!-- insert user-side script -->
-  <xsl:template match="ui:sys-script" name="ui:sys-script">
+  <temis:template match="ui:sys-script" name="ui:sys-script">
     <script language="javascript" src="{$JSDIR}/temis.js"/>
-  </xsl:template>
+  </temis:template>
 
 
   <!-- insert user-side values  -->
-  <xsl:template match="ui:sys-values" name="ui:sys-values">
+  <temis:template match="ui:sys-values" name="ui:sys-values">
     <input type="hidden" name="__postback" value="0"/>
     <input type="hidden" name="__action" value=""/>
     <input type="hidden" name="__value" value=""/>
     <input type="hidden" name="__viewstate">
-      <xsl:attribute name="/object/value"><xsl:value-of select="/object/viewstate"/></xsl:attribute>
+      <xsl:attribute name="value"><xsl:value-of select="viewstate"/></xsl:attribute>
     </input>
     <input type="hidden" name="__selfurl" >
-      <xsl:attribute name="/object/value"><xsl:value-of select="/object/url"/></xsl:attribute>
+      <xsl:attribute name="value"><temis:value-of select="url"/></xsl:attribute>
     </input>
-  </xsl:template>
+  </temis:template>
 
-</xsl:stylesheet>
+</temis:stylesheet>

@@ -16,7 +16,8 @@
    limitations under the License.
 
 */
-?><?php
+?>
+<?php
 //disable APC caching, APC/win32  does not work with TEMIS
 ini_set("apc.cache_by_default", "0");
 
@@ -120,6 +121,10 @@ class pageTestDropdownlist extends uiPage
 	}
 }
 
-temis::runpage(  "pageTestDropdownlist" );
+$temis = new Temis();
+$temis->settings->showLogo = false;
+$temis->settings->saveCompiledTemplate = true;
+$temis->settings->saveXmlTree= true;
+$temis->runpage(  "pageTestDropdownlist" );
 
 ?>

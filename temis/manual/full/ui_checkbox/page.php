@@ -16,7 +16,8 @@
    limitations under the License.
 
 */
-?><?php
+?>
+<?php
 require_once( dirname( __FILE__ ) . "/../../../temis.php");
 require_once( dirname(__FILE__ ) . "/../../../objects/ui-widgets.php" );
 require_once( dirname(__FILE__ ) . "/../diagnostics.php" );
@@ -30,6 +31,9 @@ class pageTestCheckbox extends uiPage
 	{
 
 		$this->checkbox1 = new uiCheckbox();
+
+		$this->checkboxLocalized = new uiCheckbox();
+		$this->checkboxXpath = new uiCheckbox();
 		
 
 		$this->checkboxClick = new uiCheckbox();
@@ -52,6 +56,7 @@ class pageTestCheckbox extends uiPage
 		$this->checkboxVisible = new uiCheckbox();
 
 		$this->checkboxIndexer = new uiCheckbox();
+		$this->checkboxIndexer->checked = array();
 		$this->checkboxIndexer->checked[ 0 ] = true;
 		$this->checkboxIndexer->checked[ 2 ] = true;
 
@@ -60,10 +65,16 @@ class pageTestCheckbox extends uiPage
 
 		//group items
 		$this->checkboxItems = new uiCheckbox();
+		$this->checkboxItems->checked = array();
 		$this->checkboxItems->checked[ 0 ] = true;
 		$this->checkboxItems->checked[ 2 ] = true;
-		
-		
+
+		$this->dyncheckboxItems = new uiCheckbox();
+		$this->dyncheckboxItems->checked = array();
+		$this->dyncheckboxItems->checked[ 0 ] = true;
+		$this->dyncheckboxItems->checked[ 2 ] = true;
+
+
 		$this->items = array("item1", "item2", "item3" );
 
 		$this->group = $this->mkGroup(
@@ -105,6 +116,13 @@ class pageTestCheckbox extends uiPage
 	{
 		return dirname( __FILE__ ) . "/page.xsl";
 	}
+
+	static function getStateManager()
+	{
+		return PageState::inView();
+	}
+
+
 }
 
 temis::runpage(  "pageTestCheckbox" );

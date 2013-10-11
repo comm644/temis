@@ -16,7 +16,8 @@
    limitations under the License.
 
 */
-?><?php
+?>
+<?php
 require_once( dirname( __FILE__ ) . "/../../../temis.php");
 require_once( dirname(__FILE__ ) . "/../../../objects/ui-widgets.php" );
 require_once( dirname(__FILE__ ) . "/../diagnostics.php" );
@@ -76,9 +77,11 @@ class pageTestButton extends uiPage
 	{
 		Diag::update( $this );
 	}
-	
 }
 
-temis::runpage(  "pageTestButton" );
+$temis = new Temis();
+$temis->settings->showLogo = false;
+$temis->settings->saveCompiledTemplate = true;
+$temis->settings->saveXmlTree= true;
+$temis->runpage(  "pageTestButton" );
 
-?>

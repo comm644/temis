@@ -71,7 +71,7 @@
         <p>
 
           <pre><![CDATA[<ui:checkbox id="checkbox1" value="r2" ]]><span class="red">ui:caption="caption"</span><![CDATA[/>]]></pre>
-          <ui:checkbox id="checkbox1" value="r2" ui:caption="caption"/>
+          <ui:checkbox id="checkboxLocalized" value="r2" ui:caption="caption"/>
         </p>
 
         <h3>xpath caption</h3>
@@ -80,7 +80,7 @@
           <pre><![CDATA[
 <xsl:variable name="caption">xpath caption</xsl:variable>
 <ui:checkbox id="checkbox1" value="r4" ]]><span class="red">ui:caption="{$caption}</span><![CDATA["/>]]></pre>
-          <ui:checkbox id="checkbox1" value="r4" ui:caption="{$caption}"/>
+          <ui:checkbox id="checkboxXpath" value="r4" ui:caption="{$caption}"/>
         </p>
 
         <h2>Actions</h2>
@@ -274,19 +274,19 @@ NOTE: @ui:index anf HTML tags skipped as non-important, see source for details
         <ul>
           <li>
             <xsl:variable name="group0" select="'0'"/>
-            <ui:checkbox id="checkboxItems" ui:caption="{group/title}" ui:index="group0{$group0}" ui:group-handler="dyngroup"/>
+            <ui:checkbox id="dyncheckboxItems" ui:caption="{group/title}" ui:index="{$group0}" ui:group-handler="dyngroup"/>
             <xsl:for-each select="group/items/*">
               <ul>
               <xsl:variable name="group1" select="position()"/>
               <xsl:variable name="index" select="concat('dyngroup',$group0,position())"/>
               <li>
-                <ui:checkbox id="checkboxItems" ui:caption="{title}" ui:index="{$index}" ui:group="dyngroup" ui:group-handler="{$index}"/>
+                <ui:checkbox id="dyncheckboxItems" ui:caption="{title}" ui:index="{$index}" ui:group="dyngroup" ui:group-handler="{$index}"/>
                 <ul>
                   <xsl:for-each select="items/*">
                     <xsl:variable name="group2" select="position()"/>
                     <xsl:variable name="index2" select="concat($index,position())"/>
                     <li>
-                      <ui:checkbox id="checkboxItems" ui:caption="{text()}" ui:index="{$index2}" ui:group="{$index}"/>
+                      <ui:checkbox id="dyncheckboxItems" ui:caption="{text()}" ui:index="{$index2}" ui:group="{$index}"/>
                     </li>
                   </xsl:for-each>
                 </ul>

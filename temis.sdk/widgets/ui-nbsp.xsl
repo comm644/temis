@@ -16,17 +16,18 @@
    limitations under the License.
 
 -->
-<xsl:stylesheet
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<temis:stylesheet
+  xmlns:temis="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xsl="content://www.w3.org/1999/XSL/Transform"
   xmlns:ui="ui.dtd"
   version="1.0">
 
-  <xsl:template match="ui:nbsp">
-    <xsl:text disable-output-escaping = "yes">&amp;nbsp;</xsl:text>
-  </xsl:template>
+  <temis:template match="ui:nbsp">
+    <temis:text disable-output-escaping = "yes">&amp;#160;</temis:text>
+  </temis:template>
 
-  <xsl:template match="ui:space">
-    <xsl:text disable-output-escaping = "yes">&amp;nbsp;</xsl:text>
-  </xsl:template>
+  <temis:template match="ui:space">
+    <temis:text disable-output-escaping = "yes">&amp;#160;</temis:text>
+  </temis:template>
 
-</xsl:stylesheet>
+</temis:stylesheet>

@@ -51,7 +51,7 @@ class jclean extends task
 	function isphony() { return true; }
 	function execute($target, $deps)
 	{
-		unlink( temisjs::target() );
+		unlink( JSRESULT );
 	}
 }
 

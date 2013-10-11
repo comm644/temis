@@ -16,7 +16,8 @@
    limitations under the License.
 
 */
-?><?php
+?>
+<?php
 require_once( dirname( __FILE__ ) . "/../../../temis.php");
 require_once( dirname(__FILE__ ) . "/../../../objects/ui-widgets.php" );
 require_once( dirname(__FILE__ ) . "/../diagnostics.php" );

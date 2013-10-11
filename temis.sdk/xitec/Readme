@@ -6,21 +6,6 @@ Alexei V. Vasilyev (c) 2008
      
     Xml wIdget Template compiler:  
     
-    Compiler uses very simplest way.
-
-    If you have using in XSLT expressions xpath for retriveing WIDGET information
-    begins from '/widget/'  (for example:  /widget/@attribute)
-    then comiler switches to WIDGET mode and performs copying your
-    template code into output template
-
-    If you have using xpath for getting OBJECT information then compiler
-    switches to GEN (generation) mode and performs generating instruction
-    for creating your code in target template
-
-    If you have using instructions without using address /widget/ or /object/
-    then compiler performs transformations according to current mode.
-    
-    Compiler performs tesing only @test, @select and @name tags of XSLT instructions
 
     Run:
     xsltproc compiler.xsl <source.xsl> -o <result.xsl>

@@ -127,7 +127,8 @@
                   <xsl:variable name="item" select="."/>
                   <xsl:for-each select="//items/*">
                     <td   style="border-bottom:thin solid black;">
-                      <ui:radio id="radio1" ui:caption="{text()}" ui:index="item{$item/@index}" value="{@index}"/>
+                      <xsl:variable name="caption" select="concat($item,'-',text())"/>
+                      <ui:radio id="radio1" ui:caption="{$caption}" ui:index="item{$item/@index}" value="{@index}" style="color: black; background-color: yellow; font-size: 14pt;"/>
                     </td>
                   </xsl:for-each>
                 </tr>

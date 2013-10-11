@@ -16,7 +16,8 @@
    limitations under the License.
 
 */
-?><?php
+?>
+<?php
 /******************************************************************************
  Copyright (c) 2008 by Alexei V. Vasilyev.  All Rights Reserved.                         
  -----------------------------------------------------------------------------
@@ -41,7 +42,7 @@ class xitec
 		$this->generator = dirname( __FILE__ ) . "/compiler.xsl";
 	}
 
-	function getInstance()
+	static function getInstance()
 	{
 		if ( PHP_VERSION >= 5 ) {
 			return new xitec_php5();
@@ -87,8 +88,11 @@ class Xitec_php5 extends Xitec
 	function compile( $srcpath, $destpath )
 	{
 
+		$doc = new DOMDocument();
+		$doc->load($this->generator);
 		$proc = new xsltProcessor;
-		$proc->importStyleSheet(DomDocument::load($this->generator));
+		
+		$proc->importStyleSheet($doc);
 
 		$xml = new DOMDocument();
 		$xml->resolveExternals = true;

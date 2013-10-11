@@ -47,54 +47,37 @@
        is not used
 
      -->
-<xsl:stylesheet
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<temis:stylesheet
+  xmlns:temis="http://www.w3.org/1999/XSL/Transform"
   xmlns:ui="ui.dtd"
-  xmlns:gen="gen.dtd"
-  xmlns:xitec="xitec.dtd"
-  exclude-result-prefixes="ui gen"
+  xmlns:xsl="content://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="ui "
   version="1.0">
 
   <!-- UI button generator -->
-  <xsl:template name="ui:file" match="ui:file">
-    <xsl:param name="node" select="."/>
+  <temis:template name="ui:file" match="ui:file">
 
-    <xsl:param name="/widget/id">
-      <xsl:apply-templates select="." mode="gen:object-id">
-        <xsl:with-param name="context">event</xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:param>
+    <temis:variable name="index-id"><temis:apply-templates select="." mode="gen-index-id"/></temis:variable>
+    <temis:variable name="index-name"><temis:apply-templates select="." mode="gen-index-name"/></temis:variable>
 
-    <xsl:param name="/widget/control-id">
-      <xsl:apply-templates select="." mode="gen:object-id">
-        <xsl:with-param name="inline">yes</xsl:with-param>
-        <xsl:with-param name="context">id</xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:param>
+    <xsl:if test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/visible = 1">
+      <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
+      <input type="file"
+             id  ="{{$temis-object/__name}}{$index-id}"
+             name="{{$temis-object/__name}}{$index-name}">
 
-    <xsl:param name="/widget/control-name">
-      <xsl:apply-templates select="." mode="gen:object-id">
-        <xsl:with-param name="inline">yes</xsl:with-param>
-        <xsl:with-param name="context">name</xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:param>
+        <temis:apply-templates select="." mode="temis-copy-attributes"/>
+        <temis:apply-templates select="." mode="temis-add-handler">
+          <temis:with-param name="event">onchange</temis:with-param>
+        </temis:apply-templates>
 
-    <xsl:apply-templates select="/widget/." mode="gen:test-visibility">
-      <xsl:with-param name="content">
+        <!-- insert user code here  -->
+        <temis:apply-templates select="*"/>
 
-            <input id="{/widget/$control-id}" name="{/widget/$control-name}" type="file" >
-              <xsl:apply-templates select="/widget/." mode="gen:copy-attributes"/>
-              
-              <xsl:apply-templates select="/widget/." mode="gen:add-handler">
-                <xsl:with-param name="/widget/event">onchange</xsl:with-param>
-              </xsl:apply-templates>
+      </input>
+    </xsl:if>
 
-              <xsl:apply-templates select="." mode="insert-variable-for-value-of"/>
-              <xsl:attribute name="/object/value"><xsl:value-of select="/object/$value"/></xsl:attribute>
-            </input>
-        
-      </xsl:with-param>
-    </xsl:apply-templates>
-  </xsl:template>
 
-</xsl:stylesheet>
+  </temis:template>
+
+</temis:stylesheet>

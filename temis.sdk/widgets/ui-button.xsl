@@ -50,110 +50,75 @@
          />
          
      -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:gen="gen.dtd"
+<temis:stylesheet xmlns:temis="http://www.w3.org/1999/XSL/Transform"
+                  xmlns:xsl="content://www.w3.org/1999/XSL/Transform"
   xmlns:ui="ui.dtd"
                 version="1.0">
 
 
-  <xsl:template match="ui:button">
-    <xsl:param name="node" select="."/>
-    <xsl:param name="/widget/id">
-      <xsl:apply-templates select="." mode="gen:object-id">
-        <xsl:with-param name="context">event</xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:param>
 
-    <xsl:param name="/widget/control-id">
-      <xsl:apply-templates select="." mode="gen:object-id">
-        <xsl:with-param name="inline">yes</xsl:with-param>
-        <xsl:with-param name="context">id</xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:param>
+  <temis:template match="ui:button">
+    <temis:variable name="index-id"><temis:apply-templates select="." mode="gen-index-id"/></temis:variable>
+    <temis:variable name="index-name"><temis:apply-templates select="." mode="gen-index-name"/></temis:variable>
 
-    <xsl:param name="/widget/control-name">
-      <xsl:apply-templates select="." mode="gen:object-id">
-        <xsl:with-param name="inline">yes</xsl:with-param>
-        <xsl:with-param name="context">name</xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:param>
+    <temis:variable name="type">
+      <temis:choose>
+        <temis:when test="count(@type) = 0">button</temis:when>
+        <temis:otherwise>submit</temis:otherwise>
+      </temis:choose>
+    </temis:variable>
 
-    <xsl:apply-templates select="/widget/." mode="gen:test-visibility">
-      <xsl:with-param name="content">
+    <xsl:if test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/visible = 1">
+      <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
+          <input type="{$type}"
+                 id  ="{{$temis-object/__name}}{$index-id}"
+                 name="{{$temis-object/__name}}{$index-name}">
 
-        <xsl:if test="/widget/@type = 'submit'">
-          <script language='JavaScript'>
-            <xsl:text>_temis.setDefaultAction( </xsl:text>
-            <xsl:apply-templates select="." mode="gen:create-event">
-              <xsl:with-param name="event" select="'onclick'"/>
-            </xsl:apply-templates>
-            <xsl:text>);</xsl:text>
-          </script>
-        </xsl:if>
+            <temis:apply-templates select="." mode="temis-copy-attributes"/>
+            <temis:apply-templates select="." mode="temis-add-handler">
+              <temis:with-param name="event">onclick</temis:with-param>
+            </temis:apply-templates>
 
+              <temis:apply-templates select="." mode="ui-button-caption"/>
 
-        <input id="{/widget/$control-id}"  name="{/widget/$control-name}">
-          
-          <!-- copy attributes  -->
-          <xsl:apply-templates select="." mode="gen:copy-attributes"/>
-          
-          <xsl:if test="count(/widget/@type) = 0">
-            <xsl:attribute name="type">button</xsl:attribute>
-          </xsl:if>
+            <!-- insert user code here  -->
+            <temis:apply-templates select="*"/>
 
-          <xsl:apply-templates select="/widget/." mode="gen:test-disabling"/>
-          <xsl:apply-templates select="/widget/." mode="button-insert-caption"/>
+          </input>
+    </xsl:if>
+  </temis:template>
 
-          <xsl:apply-templates select="/widget/." mode="gen:add-handler">
-            <xsl:with-param name="context" select="'event'"/>
-            <xsl:with-param name="event">onclick</xsl:with-param>
-          </xsl:apply-templates>
+  <temis:template match="*" mode="ui-button-caption">
 
-          
-          <!-- insert user code here  -->
-          <xsl:apply-templates select="/widget/*"/>
-
-        </input>
-        
-      </xsl:with-param>
-    </xsl:apply-templates>
-  </xsl:template>
-
-  <xsl:template match="*" mode="button-insert-caption">
-   
-    <xsl:choose>
-      <xsl:when test="count( /widget/@value ) !=0">
+    <temis:choose>
+      <temis:when test="count( @value ) != 0">
         <!-- already inserted by copier -->
-      </xsl:when>
+      </temis:when>
 
-      <xsl:when test="count( /widget/@ui:caption ) !=0">
+      <temis:when test="count( @ui:caption ) !=0">
         <xsl:attribute name="value">
-          <xsl:apply-templates mode="ui:message" select="/widget/@ui:caption"/>
+          <temis:apply-templates mode="ui:message" select="@ui:caption"/>
         </xsl:attribute>
-      </xsl:when>
+      </temis:when>
 
-      <xsl:otherwise>
-        
+      <temis:otherwise>
+        <temis:variable name="index"><temis:apply-templates select="." mode="gen-index-xpath"/></temis:variable>
         <!-- use program defined text -->
         <xsl:choose>
-          <xsl:when test="/object/text != ''">
+          <xsl:when test="$temis-object/text{$index} != ''">
             <xsl:attribute name="value">
-              <xsl:value-of select="/object/text"/>
+              <xsl:value-of select="$temis-object/text{$index}"/>
             </xsl:attribute>
           </xsl:when>
-
-          <xsl:if test="/widget/$enable-name-as-caption='yes'">
-            <xsl:when test="/object/name != ''">
-              <xsl:attribute name="value">
-                <xsl:value-of select="/widget/$id"/>::<xsl:value-of select="/object/name"/>
-              </xsl:attribute>
-            </xsl:when>
-          </xsl:if>
+          <xsl:otherwise>
+            <xsl:attribute name="value">
+              <xsl:value-of select="$temis-object/__name"/>
+            </xsl:attribute>
+          </xsl:otherwise>
         </xsl:choose>
-        
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
+      </temis:otherwise>
+    </temis:choose>
+  </temis:template>
 
   
-</xsl:stylesheet>
+</temis:stylesheet>

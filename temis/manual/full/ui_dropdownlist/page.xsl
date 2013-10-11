@@ -35,6 +35,11 @@
   <xsl:include href="../common.xsl"/>
   <xsl:template match="/">
     <html>
+      <head>
+        <style>
+          select { width: 10em;}
+        </style>
+      </head>
       <xsl:call-template name="insert-head"/>
       <body bgcolor="#FFFFFF">
         <xsl:call-template name="insert-header"/>
@@ -156,13 +161,13 @@
           ui:items="{//page/items/*}"
           ui:item-index="{@index}"
           ui:item-value="{text()}"
-          value="2"
+          value="k2"
           />]]></pre>
         <ui:dropdownlist id="dropdownTempl"
           ui:items="{//page/items/*}"
           ui:item-index="{@index}"
           ui:item-value="{text()}"
-          value="2"
+          value="k2"
           />
 
 

@@ -16,7 +16,8 @@
    limitations under the License.
 
 */
-?><?php
+?>
+<?php
 require_once( dirname( __FILE__ ) . "/../../../temis.php");
 require_once( dirname(__FILE__ ) . "/../../../objects/ui-widgets.php" );
 require_once( dirname(__FILE__ ) . "/../diagnostics.php" );
@@ -46,7 +47,7 @@ class pageTestTextbox extends uiPage
 		$this->textboxChangeAuto->onchange->AddHandler( 'onchange' );
 		$this->textboxChangeAuto->autoPostBack = true;
 
-		$this->items = array("item1", "item2", "item3" );
+		$this->items = array("server item1", "server item2", "server item3" );
 
 		$this->textboxIndexer = new uiTextBox();
 		$this->textboxIndexer->text["item0"] = "server text0";
@@ -61,7 +62,13 @@ class pageTestTextbox extends uiPage
 
 	function onLoad()
 	{
-		Diag::update( $this );
+		if (forms::getValueEx("format", $_GET, "") != "xml") {
+			Diag::update( $this );
+		}
+		if ( $this->isPostBack() ) {
+				print_r( $_POST );
+				exit;
+		}
 	}
 	
 	function onclick()
@@ -76,8 +83,27 @@ class pageTestTextbox extends uiPage
 	{
 		return dirname( __FILE__ ) . "/page.xsl";
 	}
+	public function getOutputFormat() {
+		if (forms::getValueEx("format", $_GET, "") == "xml") {
+			return "pagexml";
+		}
+		if (forms::getValueEx("format", $_GET, "") == "xsl") {
+			return "pagexsl";
+		}
+		return "xhtml";
+	}
+
+	static function getStateManager()
+	{
+		return PageState::inView();
+	}
+
 }
 
-temis::runpage(  "pageTestTextbox" );
+$temis = new Temis();
+$temis->settings->showLogo = false;
+$temis->settings->saveCompiledTemplate = true;
+$temis->settings->saveXmlTree= true;
+$temis->runpage("pageTestTextbox" );
 
 ?>

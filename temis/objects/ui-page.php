@@ -192,7 +192,8 @@ class uiPage extends uiPage_protected
 		$members = get_object_vars( $this );
 		foreach( $members as $name => $value ) {
 			if ( !is_object( $this->$name ) ) continue;
-			if ( !is_subclass_of( $this->$name, CLASS_uiWidget ) ) continue;
+			if ( !is_subclass_of( $this->$name, CLASS_uiWidget ) && !is_a($this->$name, CLASS_uiWidget)) continue;
+
 			$this->$name->onLoad( new Sender( "page", $this ), $this->{$name}->__name );
 		}
 	}
