@@ -1,4 +1,4 @@
-DirectoryIndex  test.php
+DirectoryIndex  page.php
 
 AddType plain/xml .xml
 AddType text/xsl .xsl

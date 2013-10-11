@@ -322,10 +322,12 @@ function setHandler( event )
             <b>Note:</b>You can override some attributes from XSL template.
           </p>
 
-          XML source: <a href="page.xml">page.xml</a><br/>
-          XSL source: <a href="page1.xsl">page1.xsl</a><br/>
-          XSL source: <a href="page2.xsl">page2.xsl</a><br/>
-          XSL source: <a href="page3.xsl">page3.xsl</a>
+          XML source: <a href="?value=page.xml">page.xml</a><br/>
+          XML source: <a href="?format=xml">Page internals</a><br/>
+          Browser XSL  <a href="?format=xsl">XSL</a><br/>
+          XSL source: <a href="?value=page1.xsl">page1.xsl</a><br/>
+          XSL source: <a href="?value=page2.xsl">page2.xsl</a><br/>
+          XSL source: <a href="?value=page3.xsl">page3.xsl</a>
 
         </body>
     </html>
