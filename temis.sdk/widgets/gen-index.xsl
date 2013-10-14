@@ -77,7 +77,8 @@
           </temis:when>
           <temis:otherwise>
             <temis:value-of select="$index"/>
-            <xsl:value-of select="{substring-before( substring-after(  $index, '{{'), '}}')}"/>
+            <temis:variable name="codeline" select="substring-before( substring-after( $index, '{'), '}')"/>
+            <xsl:value-of select="{$codeline}"/>
 
           </temis:otherwise>
         </temis:choose>

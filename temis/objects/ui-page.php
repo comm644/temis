@@ -162,6 +162,7 @@ class uiPage extends uiPage_protected
 
 		$sender=implode(":", $parts);
 		$obj = $this;
+		$parent = $this;
 		while( count( $parts )  ) {
 			$member = array_shift($parts);
 			if ( !array_key_exists( $member, $obj ) ) {
@@ -169,6 +170,7 @@ class uiPage extends uiPage_protected
 				trigger_error( "TEMIS Error: member=\"$member\" is not found, path=$path\n",E_USER_ERROR );
 				return;
 			}
+			$parent = $obj;
 			$obj = $obj->{$member};
 		}
 
@@ -178,7 +180,7 @@ class uiPage extends uiPage_protected
 		}
 
 		if ( !is_null($obj) ) {
-			$obj->$event->dispatch( new Sender( $sender, $this ), $value, $this );
+			$obj->$event->dispatch( new Sender( $sender, $parent  ), $value, $this );
 		}
 	}
 

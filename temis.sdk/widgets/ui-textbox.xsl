@@ -57,8 +57,6 @@
     exclude-result-prefixes="ui"
     version="1.0">
 
-  <temis:include href="xsl-copier.xsl"/>
-  <temis:include href="gen-index.xsl"/>
 
   <temis:output indent="yes"/>
   <temis:template match="ui:page">

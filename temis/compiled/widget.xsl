@@ -94,7 +94,8 @@
           </temis:when>
           <temis:otherwise>
             <temis:value-of select="$index"/>
-            <xsl:value-of xmlns:xsl="content://www.w3.org/1999/XSL/Transform" select="{substring-before( substring-after(  $index, '{{'), '}}')}"/>
+            <temis:variable name="codeline" select="substring-before( substring-after( $index, '{'), '}')"/>
+            <xsl:value-of xmlns:xsl="content://www.w3.org/1999/XSL/Transform" select="{$codeline}"/>
 
           </temis:otherwise>
         </temis:choose>
@@ -159,109 +160,7 @@
       </temis:otherwise>
     </temis:choose>
   </temis:template>
-  <temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="gen-index">
-    <temis:param name="index" select="@ui:index"/>
-    <temis:param name="inline"/>
-    <temis:param name="context">name</temis:param>
-
-    <temis:if test="$index!=''">
-      
-      <temis:variable name="code">
-        <temis:choose>
-          <temis:when test="$inline='yes'">
-            <temis:value-of select="$index"/>
-          </temis:when>
-
-          <temis:when test="$inline = 'xpath' and starts-with( $index, '{')">
-            <temis:variable name="codeline" select="substring-before( substring-after( $index, '{'), '}')"/>
-            <temis:if test="not(starts-with($codeline,'$') or contains($codeline, '('))">
-              <temis:text>current()/</temis:text>
-            </temis:if>
-            <temis:value-of select="$codeline"/>
-          </temis:when>
-
-          <temis:when test="$inline='xpath' and contains( $index, '{')">
-            <temis:variable name="codeline" select="substring-before( substring-after( $index, '{'), '}')"/>
-            
-            <temis:text>concat('</temis:text>
-            <temis:value-of select="substring-before( $index, '{')"/>
-            <temis:text>',</temis:text>
-            <temis:if test="not(starts-with($codeline,'$') or contains($codeline, '('))">
-              <temis:text>current()/</temis:text>
-            </temis:if>
-            <temis:value-of select="$codeline"/>
-            <temis:text>)</temis:text>
-          </temis:when>
-          <temis:when test="$inline='xpath'">
-            <temis:value-of select="$index"/>
-          </temis:when>
-          <temis:otherwise>
-            <temis:value-of select="$index"/>
-            <xsl:value-of xmlns:xsl="content://www.w3.org/1999/XSL/Transform" select="{substring-before( substring-after(  $index, '{{'), '}}')}"/>
-
-          </temis:otherwise>
-        </temis:choose>
-      </temis:variable>
-
-      <temis:choose>
-        <temis:when test="$context='id'">
-          <!--  <input id="id$id"/> -->
-          <temis:text>--</temis:text><temis:copy-of select="$code"/>
-        </temis:when>
-        <temis:when test="$context='name'">
-          <!--  <input name="id[index]"/> -->
-          <temis:text>[</temis:text><temis:copy-of select="$code"/> <temis:text>]</temis:text>
-        </temis:when>
-        <temis:when test="$context='noindex'"/>
-        <temis:when test="$context='event'">
-          <!--
-               js:  cation="event:" + id + ":" + event;
-
-               event:object$object$object:onclick       - without index
-               event:object$object$object-index:onclick - with index
-               -->
-          <temis:copy-of select="$code"/>
-        </temis:when>
-        <temis:when test="$context='xpath' and contains( $index, '{')">
-          <temis:text/>/*[ @index = <temis:copy-of select="$code"/>]<temis:text/>
-        </temis:when>
-        <temis:when test="$context='xpath' ">
-          <temis:text/>/*[ @index = '<temis:copy-of select="$code"/>']<temis:text/>
-        </temis:when>
-        <temis:when test="$context='code' ">
-          <temis:copy-of select="$code"/>
-        </temis:when>
-      </temis:choose>
-    </temis:if>
-    
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="gen-index-name">
-    <temis:if test="count(@ui:index) != 0">
-      <temis:text/>[<temis:value-of select="@ui:index"/>]<temis:text/>
-    </temis:if>
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="gen-index-id">
-    <temis:if test="count(@ui:index) != 0">
-      <temis:text/>-<temis:value-of select="@ui:index"/>
-    </temis:if>
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="gen-index-xpath">
-    <temis:apply-templates select="." mode="gen-index">
-      <temis:with-param name="inline" select="'xpath'"/>
-      <temis:with-param name="context" select="'xpath'"/>
-    </temis:apply-templates>
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*|@*|text()" mode="gen-index-valueof">
-    <temis:param name="index" select="."/>
-    <temis:choose>
-      <temis:when test="contains($index,'{')">
-        <xsl:value-of xmlns:xsl="content://www.w3.org/1999/XSL/Transform">
-          <temis:attribute name="select">
-            <temis:value-of select="substring-before( substring-after(  $index, '{' ), '}')"/>
-          </temis:attribute>
-        </xsl:value-of>
-      </temis:when>
-      <temis:otherwise>
-        <temis:value-of select="$index"/>
-      </temis:otherwise>
-    </temis:choose>
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="text()|@*|*" mode="insert-event-param">
+  <temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="text()|@*|*" mode="insert-event-param">
     <temis:param name="name"/>
     <xsl:with-param xmlns:xsl="content://www.w3.org/1999/XSL/Transform" name="{$name}"><temis:apply-templates mode="gen-index-valueof" select="."/></xsl:with-param>
   </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="temis-add-handler">
@@ -421,14 +320,14 @@
       <xsl:param name="temis-widget" select="/root/page"/>
       <xsl:param name="ui-page" select="/root/page"/>
       <xsl:param name="ui-index" select="/root/@index"/>
-      <temis:apply-templates select="*"/>
+      <temis:apply-templates select="*|text()"/>
     </xsl:template>
   </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="temis:template">
     <temis:copy>
       <temis:apply-templates select="." mode="temis-copy-attributes"/>
       <xsl:param xmlns:xsl="content://www.w3.org/1999/XSL/Transform" name="temis-widget"/>
       <xsl:param xmlns:xsl="content://www.w3.org/1999/XSL/Transform" name="ui-page"/>
-      <temis:apply-templates select="*"/>
+      <temis:apply-templates select="*|text()"/>
     </temis:copy>
   </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="temis:apply-templates|temis:call-template">
     <temis:copy>
@@ -481,147 +380,19 @@
 
   <!-- block templates -->
   <temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="ui:widget">
-    <xsl:template xmlns:xsl="content://www.w3.org/1999/XSL/Transform" match="*[@class='{@class}']" mode="temis-insert-widget">
+    <xsl:template xmlns:xsl="content://www.w3.org/1999/XSL/Transform" match="*[@class='{@class}']" mode="temis-insert-widget"/>
+    <xsl:template xmlns:xsl="content://www.w3.org/1999/XSL/Transform" match="*[@class='{@class}' and visible='1']" mode="temis-insert-widget">
       <xsl:param name="temis-widget" select="."/>
+      <xsl:param name="ui-page"/>
 
-      <temis:apply-templates select="*"/>
+      <temis:apply-templates select="*|text()"/>
     </xsl:template>
   </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="ui:insert-widget">
     <xsl:apply-templates xmlns:xsl="content://www.w3.org/1999/XSL/Transform" select="$temis-widget/{@id}" mode="temis-insert-widget">
-
+		<xsl:with-param name="ui-page" select="$ui-page"/>
     </xsl:apply-templates>
   </temis:template>
-  <temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="gen-index">
-    <temis:param name="index" select="@ui:index"/>
-    <temis:param name="inline"/>
-    <temis:param name="context">name</temis:param>
-
-    <temis:if test="$index!=''">
-      
-      <temis:variable name="code">
-        <temis:choose>
-          <temis:when test="$inline='yes'">
-            <temis:value-of select="$index"/>
-          </temis:when>
-
-          <temis:when test="$inline = 'xpath' and starts-with( $index, '{')">
-            <temis:variable name="codeline" select="substring-before( substring-after( $index, '{'), '}')"/>
-            <temis:if test="not(starts-with($codeline,'$') or contains($codeline, '('))">
-              <temis:text>current()/</temis:text>
-            </temis:if>
-            <temis:value-of select="$codeline"/>
-          </temis:when>
-
-          <temis:when test="$inline='xpath' and contains( $index, '{')">
-            <temis:variable name="codeline" select="substring-before( substring-after( $index, '{'), '}')"/>
-            
-            <temis:text>concat('</temis:text>
-            <temis:value-of select="substring-before( $index, '{')"/>
-            <temis:text>',</temis:text>
-            <temis:if test="not(starts-with($codeline,'$') or contains($codeline, '('))">
-              <temis:text>current()/</temis:text>
-            </temis:if>
-            <temis:value-of select="$codeline"/>
-            <temis:text>)</temis:text>
-          </temis:when>
-          <temis:when test="$inline='xpath'">
-            <temis:value-of select="$index"/>
-          </temis:when>
-          <temis:otherwise>
-            <temis:value-of select="$index"/>
-            <xsl:value-of xmlns:xsl="content://www.w3.org/1999/XSL/Transform" select="{substring-before( substring-after(  $index, '{{'), '}}')}"/>
-
-          </temis:otherwise>
-        </temis:choose>
-      </temis:variable>
-
-      <temis:choose>
-        <temis:when test="$context='id'">
-          <!--  <input id="id$id"/> -->
-          <temis:text>--</temis:text><temis:copy-of select="$code"/>
-        </temis:when>
-        <temis:when test="$context='name'">
-          <!--  <input name="id[index]"/> -->
-          <temis:text>[</temis:text><temis:copy-of select="$code"/> <temis:text>]</temis:text>
-        </temis:when>
-        <temis:when test="$context='noindex'"/>
-        <temis:when test="$context='event'">
-          <!--
-               js:  cation="event:" + id + ":" + event;
-
-               event:object$object$object:onclick       - without index
-               event:object$object$object-index:onclick - with index
-               -->
-          <temis:copy-of select="$code"/>
-        </temis:when>
-        <temis:when test="$context='xpath' and contains( $index, '{')">
-          <temis:text/>/*[ @index = <temis:copy-of select="$code"/>]<temis:text/>
-        </temis:when>
-        <temis:when test="$context='xpath' ">
-          <temis:text/>/*[ @index = '<temis:copy-of select="$code"/>']<temis:text/>
-        </temis:when>
-        <temis:when test="$context='code' ">
-          <temis:copy-of select="$code"/>
-        </temis:when>
-      </temis:choose>
-    </temis:if>
-    
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="gen-index-name">
-    <temis:if test="count(@ui:index) != 0">
-      <temis:text/>[<temis:value-of select="@ui:index"/>]<temis:text/>
-    </temis:if>
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="gen-index-id">
-    <temis:if test="count(@ui:index) != 0">
-      <temis:text/>-<temis:value-of select="@ui:index"/>
-    </temis:if>
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="gen-index-xpath">
-    <temis:apply-templates select="." mode="gen-index">
-      <temis:with-param name="inline" select="'xpath'"/>
-      <temis:with-param name="context" select="'xpath'"/>
-    </temis:apply-templates>
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*|@*|text()" mode="gen-index-valueof">
-    <temis:param name="index" select="."/>
-    <temis:choose>
-      <temis:when test="contains($index,'{')">
-        <xsl:value-of xmlns:xsl="content://www.w3.org/1999/XSL/Transform">
-          <temis:attribute name="select">
-            <temis:value-of select="substring-before( substring-after(  $index, '{' ), '}')"/>
-          </temis:attribute>
-        </xsl:value-of>
-      </temis:when>
-      <temis:otherwise>
-        <temis:value-of select="$index"/>
-      </temis:otherwise>
-    </temis:choose>
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="temis-copy-attributes">
-    <!-- copy attributes  -->
-    <temis:for-each select="@*[not(contains(name(),'ui:') or name() = 'id')]">
-      <temis:attribute name="{name()}">
-        <temis:value-of select="."/>
-      </temis:attribute>
-    </temis:for-each>
-
-    <temis:apply-templates select="." mode="temis-check-disable"/>
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="temis-check-disable">
-
-    <temis:choose>
-      <temis:when test="@disabled='1' or @disabled='yes' ">
-        <!-- nothing todo -->
-      </temis:when>
-      <temis:when test="$enable-test-disabled='yes'">
-          <xsl:if xmlns:xsl="content://www.w3.org/1999/XSL/Transform" test="{{$temis-object}}/disabled = '1'">
-            <xsl:attribute name="disabled">1</xsl:attribute>
-          </xsl:if>
-      </temis:when>
-      <temis:otherwise>
-        <!-- nothing todo -->
-      </temis:otherwise>
-    </temis:choose>
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="@ui:tooltip">
-    <temis:attribute name="title">
-      <temis:apply-templates mode="ui:message" select="."/>
-    </temis:attribute>
-  </temis:template><temis:variable xmlns:temis="http://www.w3.org/1999/XSL/Transform" name="ajax-address" select="'/ajax'"/><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="ui:panel">
+  <temis:variable xmlns:temis="http://www.w3.org/1999/XSL/Transform" name="ajax-address" select="'/ajax'"/><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="ui:panel">
     <xsl:template xmlns:xsl="content://www.w3.org/1999/XSL/Transform" match="/ajax/{@id}" name="temis__generated_{@id}">
       <xsl:param name="temis-widget" select="/ajax/{@id}"/>
       <xsl:param name="ui-page" select="$temis-widget"/>
@@ -645,137 +416,7 @@
   </temis:template>
 
   <!-- elements -->
-  <temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="temis-copy-attributes">
-    <!-- copy attributes  -->
-    <temis:for-each select="@*[not(contains(name(),'ui:') or name() = 'id')]">
-      <temis:attribute name="{name()}">
-        <temis:value-of select="."/>
-      </temis:attribute>
-    </temis:for-each>
-
-    <temis:apply-templates select="." mode="temis-check-disable"/>
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="temis-check-disable">
-
-    <temis:choose>
-      <temis:when test="@disabled='1' or @disabled='yes' ">
-        <!-- nothing todo -->
-      </temis:when>
-      <temis:when test="$enable-test-disabled='yes'">
-          <xsl:if xmlns:xsl="content://www.w3.org/1999/XSL/Transform" test="{{$temis-object}}/disabled = '1'">
-            <xsl:attribute name="disabled">1</xsl:attribute>
-          </xsl:if>
-      </temis:when>
-      <temis:otherwise>
-        <!-- nothing todo -->
-      </temis:otherwise>
-    </temis:choose>
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="@ui:tooltip">
-    <temis:attribute name="title">
-      <temis:apply-templates mode="ui:message" select="."/>
-    </temis:attribute>
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="gen-index">
-    <temis:param name="index" select="@ui:index"/>
-    <temis:param name="inline"/>
-    <temis:param name="context">name</temis:param>
-
-    <temis:if test="$index!=''">
-      
-      <temis:variable name="code">
-        <temis:choose>
-          <temis:when test="$inline='yes'">
-            <temis:value-of select="$index"/>
-          </temis:when>
-
-          <temis:when test="$inline = 'xpath' and starts-with( $index, '{')">
-            <temis:variable name="codeline" select="substring-before( substring-after( $index, '{'), '}')"/>
-            <temis:if test="not(starts-with($codeline,'$') or contains($codeline, '('))">
-              <temis:text>current()/</temis:text>
-            </temis:if>
-            <temis:value-of select="$codeline"/>
-          </temis:when>
-
-          <temis:when test="$inline='xpath' and contains( $index, '{')">
-            <temis:variable name="codeline" select="substring-before( substring-after( $index, '{'), '}')"/>
-            
-            <temis:text>concat('</temis:text>
-            <temis:value-of select="substring-before( $index, '{')"/>
-            <temis:text>',</temis:text>
-            <temis:if test="not(starts-with($codeline,'$') or contains($codeline, '('))">
-              <temis:text>current()/</temis:text>
-            </temis:if>
-            <temis:value-of select="$codeline"/>
-            <temis:text>)</temis:text>
-          </temis:when>
-          <temis:when test="$inline='xpath'">
-            <temis:value-of select="$index"/>
-          </temis:when>
-          <temis:otherwise>
-            <temis:value-of select="$index"/>
-            <xsl:value-of xmlns:xsl="content://www.w3.org/1999/XSL/Transform" select="{substring-before( substring-after(  $index, '{{'), '}}')}"/>
-
-          </temis:otherwise>
-        </temis:choose>
-      </temis:variable>
-
-      <temis:choose>
-        <temis:when test="$context='id'">
-          <!--  <input id="id$id"/> -->
-          <temis:text>--</temis:text><temis:copy-of select="$code"/>
-        </temis:when>
-        <temis:when test="$context='name'">
-          <!--  <input name="id[index]"/> -->
-          <temis:text>[</temis:text><temis:copy-of select="$code"/> <temis:text>]</temis:text>
-        </temis:when>
-        <temis:when test="$context='noindex'"/>
-        <temis:when test="$context='event'">
-          <!--
-               js:  cation="event:" + id + ":" + event;
-
-               event:object$object$object:onclick       - without index
-               event:object$object$object-index:onclick - with index
-               -->
-          <temis:copy-of select="$code"/>
-        </temis:when>
-        <temis:when test="$context='xpath' and contains( $index, '{')">
-          <temis:text/>/*[ @index = <temis:copy-of select="$code"/>]<temis:text/>
-        </temis:when>
-        <temis:when test="$context='xpath' ">
-          <temis:text/>/*[ @index = '<temis:copy-of select="$code"/>']<temis:text/>
-        </temis:when>
-        <temis:when test="$context='code' ">
-          <temis:copy-of select="$code"/>
-        </temis:when>
-      </temis:choose>
-    </temis:if>
-    
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="gen-index-name">
-    <temis:if test="count(@ui:index) != 0">
-      <temis:text/>[<temis:value-of select="@ui:index"/>]<temis:text/>
-    </temis:if>
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="gen-index-id">
-    <temis:if test="count(@ui:index) != 0">
-      <temis:text/>-<temis:value-of select="@ui:index"/>
-    </temis:if>
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*" mode="gen-index-xpath">
-    <temis:apply-templates select="." mode="gen-index">
-      <temis:with-param name="inline" select="'xpath'"/>
-      <temis:with-param name="context" select="'xpath'"/>
-    </temis:apply-templates>
-  </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="*|@*|text()" mode="gen-index-valueof">
-    <temis:param name="index" select="."/>
-    <temis:choose>
-      <temis:when test="contains($index,'{')">
-        <xsl:value-of xmlns:xsl="content://www.w3.org/1999/XSL/Transform">
-          <temis:attribute name="select">
-            <temis:value-of select="substring-before( substring-after(  $index, '{' ), '}')"/>
-          </temis:attribute>
-        </xsl:value-of>
-      </temis:when>
-      <temis:otherwise>
-        <temis:value-of select="$index"/>
-      </temis:otherwise>
-    </temis:choose>
-  </temis:template><temis:output xmlns:temis="http://www.w3.org/1999/XSL/Transform" indent="yes"/><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="ui:page">
+  <temis:output xmlns:temis="http://www.w3.org/1999/XSL/Transform" indent="yes"/><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="ui:page">
     ---------------
   </temis:template><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="ui:textbox[@ui:visibility='no']"/><temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" name="ui:textbox" match="ui:textbox">
     <!--

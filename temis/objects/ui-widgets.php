@@ -16,7 +16,8 @@
    limitations under the License.
 
 */
-?><?php
+?>
+<?php
 require_once( dirname( __FILE__ ) . "/ui-event.php" );
 require_once( dirname( __FILE__ ) . "/ui-sender.php" );
 require_once( dirname( __FILE__ ) . "/ui-control.php" );

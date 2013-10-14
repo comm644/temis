@@ -80,6 +80,11 @@ class Event
 	{
 		array_push( $this->handlers, $handler );
 	}
+
+	/**
+	 * @param $sender Sender
+	 * @param $value
+	 */
 	function Dispatch( $sender, $value )
 	{
 		global $page;

@@ -75,8 +75,6 @@
                 xmlns:gen="gen.dtd"
                 exclude-result-prefixes="ui gen" version="1.0">
 
-  <temis:include href="gen-index.xsl"/>
-  <temis:include href="xsl-copier.xsl"/>
 
   <temis:variable name="ajax-address" select="'/ajax'"/>
 

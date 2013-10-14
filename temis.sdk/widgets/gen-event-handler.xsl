@@ -6,8 +6,6 @@
     version="1.0">
 
 
-  <temis:include href="gen-index.xsl"/>
-
   <temis:template match="text()|@*|*" mode="insert-event-param">
     <temis:param name="name"/>
     <xsl:with-param name="{$name}"><temis:apply-templates mode="gen-index-valueof" select="."/></xsl:with-param>

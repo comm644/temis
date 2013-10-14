@@ -11,7 +11,7 @@
       <xsl:param name="temis-widget" select="/root/page"/>
       <xsl:param name="ui-page" select="/root/page"/>
       <xsl:param name="ui-index" select="/root/@index"/>
-      <temis:apply-templates select="*"/>
+      <temis:apply-templates select="*|text()"/>
     </xsl:template>
   </temis:template>
 
@@ -20,7 +20,7 @@
       <temis:apply-templates select="." mode="temis-copy-attributes"/>
       <xsl:param name="temis-widget"/>
       <xsl:param name="ui-page"/>
-      <temis:apply-templates select="*"/>
+      <temis:apply-templates select="*|text()"/>
     </temis:copy>
   </temis:template>
 
