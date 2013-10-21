@@ -141,11 +141,13 @@
     <temis:param name="index" select="."/>
     <temis:choose>
       <temis:when test="contains($index,'{')">
+        <xsl:text><temis:value-of select="substring-before($index, '{')"/></xsl:text>
         <xsl:value-of>
           <temis:attribute name="select">
             <temis:value-of select="substring-before( substring-after(  $index, '{' ), '}')"/>
           </temis:attribute>
         </xsl:value-of>
+        <xsl:text><temis:value-of select="substring-after( $index, '}' )"/></xsl:text>
       </temis:when>
       <temis:otherwise>
         <temis:value-of select="$index"/>
