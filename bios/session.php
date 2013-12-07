@@ -44,12 +44,12 @@ class session extends Singleton
 		return(  unserialize( $value ) );
 	}
 
-	function del( $name )
+	static function del( $name )
 	{
 		unset( $_SESSION[ $name ] );
 	}
 
-	function exists( $name )
+	static function exists( $name )
 	{
 		return( array_key_exists( $name, $_SESSION ) );
 	}

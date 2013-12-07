@@ -66,11 +66,11 @@ class UIProcessor
 		return new $class();
 	}
 	
-	function updateTemplate( $templateName)
+	function updateTemplate( $templateName, $tmplnameCompiled)
 	{
 		$proc = $this->getProcessor();
 		if ( $this->settings->useCompiledTemplate ) {
-			$xslfile = $this->getCompiledName(  $templateName );
+			$xslfile = $tmplnameCompiled;
 			
 			if( $this->deps->isnewest( $xslfile, $templateName ) ) {
 				$domTemplate = $proc->loadxml( $xslfile );
@@ -78,16 +78,19 @@ class UIProcessor
 		}
 
 		if ( !isset( $domTemplate ) ) {
-			$this->compile( $templateName, true);
+			$this->compile( $templateName, $tmplnameCompiled, true);
 		}
 	}
 	
-	function apply( &$xmldom, &$templateName, $signXmlOutput=false )
+	function apply( &$xmldom, &$templateName, $signXmlOutput=false, $templateNameCompiled = null )
 	{
 		$proc = $this->getProcessor();
 
 		if ( $this->settings->useCompiledTemplate ) {
-			$xslfile = $this->getCompiledName(  $templateName );
+			if ( !$templateNameCompiled ) {
+				$templateNameCompiled  = $this->getCompiledName(  $templateName );
+			}
+			$xslfile = $templateNameCompiled;
 			
 			if( $this->deps->isnewest( $xslfile, $templateName ) ) {
 				$domTemplate = $proc->loadxml( $xslfile );
@@ -95,7 +98,7 @@ class UIProcessor
 		}
 
 		if ( !isset( $domTemplate ) ) {
-			$domTemplate = $this->compile( $templateName, $this->settings->saveCompiledTemplate || $this->settings->useCompiledTemplate);
+			$domTemplate = $this->compile( $templateName, $templateNameCompiled, $this->settings->saveCompiledTemplate || $this->settings->useCompiledTemplate);
 		}
 
 		$proc->openDOM($domTemplate);
@@ -133,7 +136,7 @@ class UIProcessor
 	 * @param bool $signSave  set true if need save result as XML to disk.
 	 * @return DOMDocument  created Xml DOM
 	 */
-	function compile( $templateName, $signSave = false)
+	function compile( $templateName, $templateNameCompiled, $signSave = false)
 	{
 		$uiGenerator = dirname( __FILE__ ) . "/../compiled/widget.xsl";
 
@@ -165,7 +168,7 @@ class UIProcessor
 
 
 		if ( $signSave ) {
-			$this->saveCompiled( $proc, $result, $templateName );
+			$this->saveCompiled( $proc, $result, $templateName, $templateNameCompiled );
 		}
 		return( $result );
 	}
@@ -191,9 +194,9 @@ class UIProcessor
 
 	/** save compiled template to .cxsl
 	 */
-	function saveCompiled( &$proc, &$domTemplate, &$templateName )
+	function saveCompiled( &$proc, &$domTemplate, &$templateName, $templateNameCompiled )
 	{
-		$outfile = $this->getCompiledName(  $templateName );
+		$outfile = $templateNameCompiled;
 
 		if( file_exists( $outfile ) ) unlink( $outfile );
 		

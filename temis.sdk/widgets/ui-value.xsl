@@ -58,8 +58,8 @@
     <xsl:if test="1 = 1">
       <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
       <input type="hidden"
-             id  ="{{$temis-object/__name}}{$index-id}"
-             name="{{$temis-object/__name}}{$index-name}">
+             id  ="{{$temis-object/@__name}}{$index-id}"
+             name="{{$temis-object/@__name}}{$index-name}">
 
         <temis:apply-templates select="." mode="temis-copy-attributes"/>
 

@@ -36,13 +36,12 @@ class DepsBuilder
 		if ( $sourceXml == null ) $this->throwError( "can't load source XML $templateName");
 
 		$result = $proc->transform( $sourceXml );
+
 		if ( !$result )  $this->throwError( "XSLT error");
 
 
 		if( file_exists( $outfile ) ) unlink( $outfile );
 		$text = $proc->getHTML( $result );
-
-		$text = preg_replace('/[\w.]+\/\.\.\//', '', $text);
 
 		file_put_contents( $outfile,$text );
 
@@ -60,7 +59,7 @@ class DepsBuilder
 	function isnewest( $target, $source )
 	{
 		if ( !file_exists( $target ) ) return false;
-		
+
 		$basedir = dirname( $source );
 		$targetTime = filemtime( $target );
 		
@@ -74,15 +73,15 @@ class DepsBuilder
 		$here = $basedir;
 		$paths = array( $basedir => $basedir);
 
-		foreach( $deps as $dep ) {
-                    if ( !$dep ) {
-                        continue;
-                    }
+		foreach ($deps as $dep) {
+			if (!$dep) {
+				continue;
+			}
 
-					$filename = $basedir . "/" .$dep;
+			$filename = $basedir . "/" . $dep;
 
-                    //echo sprintf( "%d < %d = %d:  %s < %s\n", $targetTime, filemtime( $basedir ."/". $dep ), $targetTime < filemtime( $basedir ."/". $dep ), $target, $basedir ."/". $dep );
-					if ( $targetTime < filemtime( $filename ) ) return false;
+			//echo sprintf( "%d < %d = %d:  %s < %s\n", $targetTime, filemtime( $basedir ."/". $dep ), $targetTime < filemtime( $basedir ."/". $dep ), $target, $basedir ."/". $dep );
+			if ($targetTime < filemtime($filename)) return false;
 		}
 		return true;
 	}

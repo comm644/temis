@@ -111,7 +111,7 @@ class uiPage extends uiPage_protected
 		if ( $this->_command == null ) {
 
 			//stadard page processing. load data.
-			$this->onLoad(new Sender( "page", $this), $this->__name);
+			$this->onLoad(new Sender( "page", $this), 'page');
 
 			//dispatch user event (onclick, or another postback)
 			$this->_temis_dispatchEvent();
@@ -196,21 +196,12 @@ class uiPage extends uiPage_protected
 			if ( !is_object( $this->$name ) ) continue;
 			if ( !is_subclass_of( $this->$name, CLASS_uiWidget ) && !is_a($this->$name, CLASS_uiWidget)) continue;
 
-			$this->$name->onLoad( new Sender( "page", $this ), $this->{$name}->__name );
+			$this->$name->onLoad( new Sender( "page", $this ), 'page--'.$name, 'page--'.$name );
 		}
-	}
-
-	/** top level method
-	 */ 
-	function _temis_initControls() //system hidden method
-	{
-		$this->__name = "page";
-		parent::_temis_initControls();
 	}
 
 	function initialize()
 	{
-		$this->_temis_initControls();
 	}
 
 
@@ -341,7 +332,35 @@ class uiPage extends uiPage_protected
 	{
 		return( temisTemplate::getCodeFile() . ".xsl" );
 	}
-	
+
+	/**
+	 * Strategy switcher.
+	 *
+	 * This method must returns filename of compiled template.
+	 * by default method returns filename <nameplaceName>.cxsl
+	 *
+	 * @virtual
+	 * @return string   full pathname to compiled template
+	 */
+	function getTemplateNameCompiled()
+	{
+		return( $this->getTemplateName() . '.cxsl' );
+	}
+
+	/**
+	 * Strategy switcher.
+	 *
+	 * This method must returns filename of compiled template.
+	 * by default method returns filename <nameplaceName>.cxsl
+	 *
+	 * @virtual
+	 * @return string   full pathname to compiled template
+	 */
+	function getXmlStylesheetUrl()
+	{
+		return( '?xsl=' . basename( $this->getTemplateNameCompiled() ) );
+	}
+
 	/**
 	 *  this method must returns output format. 
 	 * Avaiable values: html, xml, xhtml, pagexml
@@ -401,4 +420,3 @@ class uiPage extends uiPage_protected
 }
 
 define( "CLASS_uiPage", get_class( new uiPage() ) );
-?>

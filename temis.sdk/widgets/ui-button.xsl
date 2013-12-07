@@ -68,11 +68,11 @@
       </temis:choose>
     </temis:variable>
 
-    <xsl:if test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/visible = 1">
+    <xsl:if test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/@visible = 1">
       <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
           <input type="{$type}"
-                 id  ="{{$temis-object/__name}}{$index-id}"
-                 name="{{$temis-object/__name}}{$index-name}">
+                 id  ="{{$temis-object/@__name}}{$index-id}"
+                 name="{{$temis-object/@__name}}{$index-name}">
 
             <temis:apply-templates select="." mode="temis-copy-attributes"/>
             <temis:apply-templates select="." mode="temis-add-handler">
@@ -112,7 +112,7 @@
           </xsl:when>
           <xsl:otherwise>
             <xsl:attribute name="value">
-              <xsl:value-of select="$temis-object/__name"/>
+              <xsl:value-of select="$temis-object/@__name"/>
             </xsl:attribute>
           </xsl:otherwise>
         </xsl:choose>

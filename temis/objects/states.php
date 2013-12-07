@@ -64,15 +64,15 @@ class StateManager
  */
 class PageState_none extends StateManager
 {
-	function store($page){}
+	function store(&$page){}
 	function restore($pageclass){}
-	function cleanup($page){}
+	function cleanup(&$page){}
 }
 
 
 class PageState_session extends StateManager
 {
-	function store($page)
+	function store(&$page)
 	{
 		$pageclass = get_class( $page );
 		session::set( PageState::getName( $pageclass ), $page );
@@ -82,7 +82,7 @@ class PageState_session extends StateManager
 		return session::get( PageState::getName( $pageclass ) );
 	}
 
-	function cleanup($page)
+	function cleanup(&$page)
 	{
 		$pageclass = get_class( $page );
 		session::del(  PageState::getName( $pageclass ) );
@@ -93,7 +93,7 @@ class PageState_session extends StateManager
 
 class PageState_cookie extends StateManager
 {
-	function store($page)
+	function store(&$page)
 	{
 		//todo: need describe cookie expired time
 	}
@@ -102,7 +102,7 @@ class PageState_cookie extends StateManager
 		return cookie::get( PageState::getName( $pageclass ) );
 	}
 
-	function cleanup($page)
+	function cleanup(&$page)
 	{
 		$pageclass = get_class( $page );
 		cookie::del(  PageState::getName( $pageclass ) );
@@ -113,7 +113,7 @@ class PageState_cookie extends StateManager
 
 class PageState_view  extends StateManager
 {
-	function store($page)
+	function store(&$page)
 	{
 		$viewkey = "__viewstate";
 		$page->viewstate = null;
@@ -129,7 +129,7 @@ class PageState_view  extends StateManager
 		}
 		return null;
 	}
-	function cleanup($page)
+	function cleanup(&$page)
 	{
 		$page->viewstate = null;
 	}

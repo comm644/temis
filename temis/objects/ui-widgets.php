@@ -30,18 +30,18 @@ class uiWidget extends uiControl
 
 	function onLoad( $sender, $selfname )
 	{
-		parent::onLoad($sender, $selfname);;
+		parent::onLoad($sender, $selfname );;
 		$this->_temis_onLoad( $sender );
 	}
 
-	function _temis_onLoad( &$sender ) //system hidden method
+	function _temis_onLoad( &$sender, $selfname='' ) //system hidden method
 	{
 		//import all members
 		$members = get_object_vars( $this );
 		foreach( $members as $name => $value ) {
 			if ( !is_object( $this->$name ) ) continue;
 			if ( !is_subclass_of( $this->$name, CLASS_uiWidget ) ) continue;
-			$this->$name->onLoad( new Sender( 'widget', $this ), $this->{$name}->__name );
+			$this->$name->onLoad( new Sender( 'widget', $this ), implode( '--', array( $selfname, $name)  ));
 		}
 	}
 
@@ -152,7 +152,7 @@ class uiTextBox extends uiWidget
 		$this->text  = $text;
 		
 		if ( $signChanged ){
-			$this->onchange->dispatch( $sender->ForwardFrom( $this->__name ), $text );
+			$this->onchange->dispatch( $sender->ForwardFrom( $selfname ), $text );
 		}
 	}
 	

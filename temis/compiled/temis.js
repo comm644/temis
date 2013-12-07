@@ -201,9 +201,9 @@ function temis( formName )
 {
 	this.submitted = false;
 
-    this.doEvent = function(sender,event,receiver,index, target, targetIndex, targetWindow) 
+    this.doEvent = function(sender,event,receiver,index, target, targetIndex, targetWindow, onready)
     {
-      _temis.sendMessage(sender, _temis.createEvent(event, receiver,index), _temis.createTarget(target, targetIndex, targetWindow) );
+      _temis.sendMessage(sender, _temis.createEvent(event, receiver,index), _temis.createTarget(target, targetIndex, targetWindow), onready );
     }
     
 	this.createEvent = function( event, receiver, index )
@@ -319,7 +319,7 @@ function temis( formName )
 				else if ( el.tagName == "TEXTAREA" ) {
 					params[el.name] = el.value;
 				}
-				else if ( el.tagName == 'SELECT' ) {	
+				else if ( el.tagName == 'SELECT' && el.selectedIndex != -1) {	
 					params[ el.name ] = el.getElementsByTagName('OPTION')[el.selectedIndex].getAttribute('value');
 				}
 			}
@@ -351,11 +351,11 @@ function temis( formName )
 	@param target object of Target class (container)
 	@param event  object ob Event class (container)
 	 */
-	this.sendMessage = function( sender, event, target)
+	this.sendMessage = function( sender, event, target, onready)
 		{
 			if ( target.isAjaxRequired() ){
 				if ( _temis_ajax != null ) {
-					_temis_ajax.execute( sender.id, event, target );
+					_temis_ajax.execute( sender.id, event, target, onready );
 				}
 				else alert( "TEMIS: Error: AJAX does not found" );
 				return;
@@ -428,7 +428,7 @@ function temis_ajax()
 		@apram event     sender event
 		@param target    result receiver, object of Target
 	*/
-	this.execute = function(id, event, target)
+	this.execute = function(id, event, target, onready)
 		{
 			var e = target.getElement();
 			if ( !e ) {
@@ -470,7 +470,11 @@ function temis_ajax()
 					if ( !window.document.haveRuntimeScriptLoading() ){
 						_temis_ajax.executeScripts( req.responseXML.documentElement );
 					}
+                    if ( onready != undefined ) {
+                        onready();
+                    }
 				}
+
 			}
 
 			var sender = window.document.getElementById(id);

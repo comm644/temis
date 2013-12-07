@@ -67,11 +67,11 @@
 
 
 
-    <xsl:if test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/visible = 1">
+    <xsl:if test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/@visible = 1">
       <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
       <input type="radio"
-             id  ="{{$temis-object/__name}}{$index-id}"
-             name="{{$temis-object/__name}}{$index-name}">
+             id  ="{{$temis-object/@__name}}{$index-id}"
+             name="{{$temis-object/@__name}}{$index-name}">
 
         <temis:apply-templates select="." mode="temis-copy-attributes"/>
         <temis:apply-templates select="." mode="temis-add-handler">
@@ -102,7 +102,7 @@
       </input>
 
       <temis:if test="count( @ui:caption ) != 0">
-        <label id="{{$temis-object/__name}}{$index-id}-label" for="{{$temis-object/__name}}{$index-id}"
+        <label id="{{$temis-object/@__name}}{$index-id}-label" for="{{$temis-object/@__name}}{$index-id}"
                style="{@ui:caption-style}" class="{@ui:caption-class}">
 
           <temis:apply-templates mode="ui:message" select="@ui:caption"/>

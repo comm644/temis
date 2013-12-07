@@ -96,12 +96,12 @@
     <temis:variable name="index-name"><temis:apply-templates select="." mode="gen-index-name"/></temis:variable>
 
 
-    <xsl:if test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/visible = 1">
+    <xsl:if test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/@visible = 1">
       <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
 
       <select
-             id  ="{{$temis-object/__name}}{$index-id}"
-             name="{{$temis-object/__name}}{$index-name}">
+             id  ="{{$temis-object/@__name}}{$index-id}"
+             name="{{$temis-object/@__name}}{$index-name}">
 
         <temis:apply-templates select="." mode="temis-copy-attributes"/>
 

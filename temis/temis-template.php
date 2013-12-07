@@ -96,15 +96,17 @@ class temisTemplate
 		$proc = new UIProcessor($settings);
 
 		$templname = $page->getTemplateName();
+		$tmplnameCompiled = $page->getTemplateNameCompiled();
+
 		if ( !file_exists( $templname ) ) {
 			trigger_error( "Template '$templname' was not found!", E_USER_ERROR );
 			exit;
 		}
 		if ( $outputFormat == "pagexsl") {
-			$proc->updateTemplate($templname);
+			$proc->updateTemplate($templname, $tmplnameCompiled);
 			/* @var $doc DOMComment */
 			$doc = $xml->doc;
-			$name = "?xsl=".  str_replace(".xsl", ".cxsl", basename($templname));
+			$name = $page->getXmlStylesheetUrl();
 			$doc->insertBefore( $doc->createProcessingInstruction('xml-stylesheet', 'type="text/xsl" href="'.$name.'"'), $doc->firstChild);
 			header("Content-Type: text/xml");
 			return $doc->saveXML();
@@ -116,10 +118,10 @@ class temisTemplate
 			return $doc->saveXML();
 		}
 			
-		$result .= $proc->apply( $xml->doc, $templname, $outputFormat );
+		$result .= $proc->apply( $xml->doc, $templname, $outputFormat, $tmplnameCompiled  );
 
 		if ( $settings->saveXmlTree ) {
-			$xml->saveFile( $templname . ".page.xml");
+			$xml->saveFile( $tmplnameCompiled . ".page.xml");
 		}
 		return $result;
 	}

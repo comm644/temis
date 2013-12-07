@@ -24,7 +24,13 @@ require_once( dirname( __FILE__ ) . '/ui-event.php' );
 
 class PageSerializer  extends xmlbase
 {
-	function serializeToNode( &$obj, $name = null, $index=null )
+	function appendAttribute( &$node, $name, $value )
+	{
+		$attr  = $this->newAttr( $name, $value);
+		$this->appendChild( $node, $attr );
+		return $node;
+	}
+	function serializeToNode( &$obj, $name = null, $index=null, $widgetId='page' )
 	{
 		if ( !isset( $name ) ) $name = gettype( $obj );
 
@@ -40,17 +46,67 @@ class PageSerializer  extends xmlbase
 			$this->appendChild( $node, $attr );
 		}
 
-		
+		if ( is_a($obj, 'uiControl')) {
+			$widgetId = implode('--', array( $widgetId, $name) );
+			$attr  = $this->newAttr( "__name", $widgetId);
+			$this->appendChild( $node, $attr );
+
+
+			/*
+			$child = $this->newNode('__name');
+			$text = $this->newTextNode( $widgetId );
+			$this->appendChild( $child, $text );
+			$this->appendChild( $node, $child);
+			*/
+		}
+		if ( is_a( $obj, CLASS_Event)){
+			return $this->appendAttribute($node, "handled", count( $obj->handlers ));
+		}
+
+		$iswidget = is_a($obj, 'uiWidget');
+		if ( $iswidget) {
+				/** @var $obj uiWidget */
+			$this->appendAttribute($node, 'visible', $obj->visible );
+			$this->appendAttribute($node, 'autoPostBack', $obj->autoPostBack);
+		}
+
 		if ( is_object( $obj ) ) {
-			foreach( get_object_vars( $obj ) as $key => $value ) {
-				if ( $value === NULL || $value === '' || $value === false) {
-					continue;
+			if ( (method_exists($obj, "__serializeAsAttriutes") && $obj->__serializeAsAttriutes()) || isset( $obj->__useattr)) {
+				foreach( get_object_vars( $obj ) as $key => $value ) {
+					if ( $key == "__useattr") {
+						continue;
+					}
+					if ( $value === NULL || $value === '' || $value === false) {
+						continue;
+					}
+					if ( is_a($value, CLASS_Event) && !$value->isExists()) {
+						continue;
+					}
+
+					if ( is_scalar($value )) {
+						$child= $this->newAttr( $key, $value );
+					}
+					else {
+						$child = $this->serializeToNode( $value, $key, $widgetId );
+					}
+					$this->appendChild( $node, $child );
 				}
-				if ( is_a($value, CLASS_Event) && !$value->isExists()) {
-					continue;
+			}
+			else {
+				foreach( get_object_vars( $obj ) as $key => $value ) {
+					if ( $value === NULL || $value === '' || $value === false) {
+						continue;
+					}
+					if ( is_a($value, CLASS_Event) && !$value->isExists()) {
+						continue;
+					}
+					if ( $iswidget && ( $key == 'visible' || $key == 'autoPostBack' )){
+						continue;
+					}
+
+					$child = $this->serializeToNode( $value, $key );
+					$this->appendChild( $node, $child );
 				}
-				$child = $this->serializeToNode( $value, $key );
-				$this->appendChild( $node, $child );
 			}
 		}
 		else if( is_array( $obj ) )  {
@@ -71,7 +127,7 @@ class PageSerializer  extends xmlbase
 	
 	function serialize( &$obj, $name=null, $root = FALSE )
 	{
-		$rc =  $this->insertNode( $this->serializeToNode( $obj, $name ), $root );
+		$rc =  $this->insertNode( $this->serializeToNode( $obj, $name, null, "page" ), $root );
 		return( $rc );
 	}
 

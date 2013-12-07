@@ -2,6 +2,14 @@
 require_once( dirname( __FILE__ ). "/../settings/config.php" );
 require_once( dirname( __FILE__ ). "/../objects/DepsBuilder.php" );
 
+//
+//  ROOT ->
+//      level2/source ) -->
+//      level2/dep1  -->
+//          level3/dep2  -->
+//          level3/dep3  -->
+//  level1/dep4
+
 class testTemplateBuilder extends phpTest_TestSuite
 {
 	function setUp()
@@ -11,10 +19,9 @@ class testTemplateBuilder extends phpTest_TestSuite
 			unlink( 'data/target.cxsl.deps');
 
 		$time = time();
-		touch( 'data/dep1.xsl', $time, $time);
-		touch( 'data/dep2.xsl', $time, $time);
-		file_put_contents( 'data/source.xsl', '<?xml version="1.0" encoding="utf-8" ?><root/>' );
-		touch( 'data/source.xsl', $time, $time);
+		touch( 'data/level1/level2/dep1.xsl', $time, $time);
+		touch( 'data/level1/level2/source.xsl', $time, $time);
+		touch( 'data/level1/level2/level3/dep2.xsl', $time, $time);
 		touch( 'data/target.cxsl', $time, $time);
 	}
 	
@@ -23,7 +30,7 @@ class testTemplateBuilder extends phpTest_TestSuite
 		$deps = new DepsBuilder();
 
 		$target = 'data/target.cxsl';
-		$source = 'data/source.xsl';
+		$source = 'data/level1/level2/source.xsl';
 
 		//no target file
 		TS_ASSERT_EQUALS( false, $deps->isnewest( "data/nofile", $source ) );
@@ -38,19 +45,19 @@ class testTemplateBuilder extends phpTest_TestSuite
 		TS_ASSERT_EQUALS( true, $deps->isnewest( $target, $source) );
 
 		//change deps time
-		touch( 'data/dep2.xsl', time()+12);
+		touch( 'data/level1/level2/level3/dep2.xsl', time()+12);
 
 		//deps changed
 		TS_ASSERT_EQUALS( false, $deps->isnewest( $target, $source ) );
 	}
 
 	
-	function test_primary_source_changed()
+	function xtest_primary_source_changed()
 	{
 		$deps = new DepsBuilder();
 
 		$target = 'data/target.cxsl';
-		$source = 'data/source.xsl';
+		$source = 'data/level1/level2/source.xsl';
 
 		//no target file - need build
 		TS_ASSERT_EQUALS( true, $deps->isnewest( "data/nofile", $source ) );
@@ -71,4 +78,3 @@ class testTemplateBuilder extends phpTest_TestSuite
 		TS_ASSERT_EQUALS( true, $deps->isnewest( $target, $source ) );
 	}
 }
-?>

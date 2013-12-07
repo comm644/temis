@@ -35,7 +35,7 @@ function temis_ajax()
 		@apram event     sender event
 		@param target    result receiver, object of Target
 	*/
-	this.execute = function(id, event, target)
+	this.execute = function(id, event, target, onready)
 		{
 			var e = target.getElement();
 			if ( !e ) {
@@ -77,7 +77,11 @@ function temis_ajax()
 					if ( !window.document.haveRuntimeScriptLoading() ){
 						_temis_ajax.executeScripts( req.responseXML.documentElement );
 					}
+                    if ( onready != undefined ) {
+                        onready();
+                    }
 				}
+
 			}
 
 			var sender = window.document.getElementById(id);

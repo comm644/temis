@@ -258,7 +258,9 @@
 
   <temis:copy>
       <temis:apply-templates select="@*"/>
-      <temis:apply-templates select="node()"/>
+      <xsl:variable xmlns:xsl="content://www.w3.org/1999/XSL/Transform" name="temis-widget" select="/root/page"/>
+      <xsl:variable xmlns:xsl="content://www.w3.org/1999/XSL/Transform" name="ui-page" select="/root/page"/>
+      <temis:apply-templates select="node()|text()|*"/>
 
       <xsl:template xmlns:xsl="content://www.w3.org/1999/XSL/Transform" match="*" mode="temis-set-id">
         <xsl:param name="ui-index"/>

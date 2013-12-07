@@ -40,7 +40,6 @@ class PageState
 		if ( $page == null ) {
 			$page = new $pageclass();
 			$page->_temis_setLocation( PageLocation::getURI(),  PageLocation::getPreviousURI() );
-			$page->_temis_initControls();
 		}
 		return( $page );
 	}

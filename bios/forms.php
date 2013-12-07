@@ -40,7 +40,7 @@ class forms
 	 * @param bool $signTrim   inicates whether need trim spaces.
 	 * @return string|array   read and converted value 
 	 */
-	function getValue( $name, $src = null, $signTrim = true )
+	static function getValue( $name, $src = null, $signTrim = true )
 	{
 		return( forms::getValueEx( $name, $src === null ? $_POST : $src, true ) );
 	}
@@ -48,7 +48,7 @@ class forms
 	
 	/** return single normalized value from $src ($_POST)
 	 */
-	function getValueEx( $name, $src = null, $signTrim = true )
+	static function getValueEx( $name, $src = null, $signTrim = true )
 	{
 		if ( !$src ) $src = $_POST;
 		if ( !array_key_exists( $name, $src ) ) {
@@ -70,7 +70,7 @@ class forms
 	}
 
 
-	function convert( $text, $signTrim=true)
+	static function convert( $text, $signTrim=true)
 	{
 		$rc = reconv("utf-8", TEMIS_INT_ENCODING,  $text, $decodedText);
 		if ( !$rc ) $text = $decodedText;
@@ -84,7 +84,7 @@ class forms
 
 	/** load from data into CLASS members (NOT TO OBJECT MEMBERS)
 	 */
-	function loadObject( &$obj, $exclude, $src = FALSE, $signTrim=false )
+	static function loadObject( &$obj, $exclude, $src = FALSE, $signTrim=false )
 	{
 		if ( !$src ) $src = $_POST;
 
@@ -99,9 +99,8 @@ class forms
 		return( $obj );
 	}
 
-	function loadMember( &$obj, $member )
+	static function loadMember( &$obj, $member )
 	{
 		$obj->$member  = forms::getValueEx( $member, $_POST );
 	}
 }
-?>

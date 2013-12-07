@@ -65,12 +65,11 @@ class EventHandler
  */
 class Event
 {
-	var $name;
 	var $handlers = array();
 
 	function Event( $name )
 	{
-		$this->name = $name;
+		//$this->name = $name;
 	}
 
 	/**

@@ -6,7 +6,7 @@
 
   <temis:template match="ui:widget">
     <xsl:template match="*[@class='{@class}']" mode="temis-insert-widget"></xsl:template>
-    <xsl:template match="*[@class='{@class}' and visible='1']" mode="temis-insert-widget">
+    <xsl:template match="*[@class='{@class}' and @visible='1']" mode="temis-insert-widget">
       <xsl:param name="temis-widget" select="."/>
       <xsl:param name="ui-page"/>
 
