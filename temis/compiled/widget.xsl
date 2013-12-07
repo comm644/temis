@@ -267,20 +267,20 @@
         <xsl:choose>
           <xsl:when test="$ui-index != ''">
             <xsl:attribute name="id">
-              <xsl:value-of select="__name"/>
+              <xsl:value-of select="@__name"/>
               <xsl:value-of select="$ui-index"/>
             </xsl:attribute>
             <xsl:attribute name="name">
-              <xsl:value-of select="__name"/>
+              <xsl:value-of select="@__name"/>
               <xsl:value-of select="$ui-index"/>
             </xsl:attribute>
           </xsl:when>
           <xsl:otherwise>
             <xsl:attribute name="id">
-              <xsl:value-of select="__name"/>
+              <xsl:value-of select="@__name"/>
             </xsl:attribute>
             <xsl:attribute name="name">
-              <xsl:value-of select="__name"/>
+              <xsl:value-of select="@__name"/>
             </xsl:attribute>
           </xsl:otherwise>
         </xsl:choose>
@@ -288,7 +288,7 @@
 
       <xsl:template xmlns:xsl="content://www.w3.org/1999/XSL/Transform" match="*" mode="temis-set-name">
         <xsl:attribute name="name">
-          <xsl:value-of select="__name"/>
+          <xsl:value-of select="@__name"/>
         </xsl:attribute>
       </xsl:template>
       <xsl:template xmlns:xsl="content://www.w3.org/1999/XSL/Transform" match="*" mode="temis-set-value">
@@ -304,11 +304,11 @@
         <xsl:param name="target-index"/>
         <xsl:param name="target-window"/>
 
-        <xsl:if test="count( handlers/* ) != 0 and ../autoPostBack = '1'">
+        <xsl:if test="@handled != '0' != 0 and ../@autoPostBack = '1'">
           <xsl:attribute name="{{name()}}">
             <temis:text/>_temis.doEvent(this,<temis:text/>
             <temis:text/>'<xsl:value-of select="name()"/>', <temis:text/>
-            <temis:text/>'<xsl:value-of select="../__name"/>',<temis:text/>
+            <temis:text/>'<xsl:value-of select="../@__name"/>',<temis:text/>
             <temis:text/>'<xsl:value-of select="$index"/>',<temis:text/>
             <temis:text/>'<xsl:value-of select="$target"/>', <temis:text/>
             <temis:text/>'<xsl:value-of select="$target-index"/>',<temis:text/>
@@ -385,7 +385,7 @@
   <!-- block templates -->
   <temis:template xmlns:temis="http://www.w3.org/1999/XSL/Transform" match="ui:widget">
     <xsl:template xmlns:xsl="content://www.w3.org/1999/XSL/Transform" match="*[@class='{@class}']" mode="temis-insert-widget"/>
-    <xsl:template xmlns:xsl="content://www.w3.org/1999/XSL/Transform" match="*[@class='{@class}' and visible='1']" mode="temis-insert-widget">
+    <xsl:template xmlns:xsl="content://www.w3.org/1999/XSL/Transform" match="*[@class='{@class}' and @visible='1']" mode="temis-insert-widget">
       <xsl:param name="temis-widget" select="."/>
       <xsl:param name="ui-page"/>
 
@@ -450,11 +450,11 @@
     <temis:variable name="index-name"><temis:apply-templates select="." mode="gen-index-name"/></temis:variable>
 
 
-    <xsl:if xmlns:xsl="content://www.w3.org/1999/XSL/Transform" test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/visible = 1">
+    <xsl:if xmlns:xsl="content://www.w3.org/1999/XSL/Transform" test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/@visible = 1">
       <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
       <temis:choose>
         <temis:when test="$mode = 'multiline'">
-          <textarea id="{{$temis-object/__name}}{$index-id}" name="{{$temis-object/__name}}{$index-name}">
+          <textarea id="{{$temis-object/@__name}}{$index-id}" name="{{$temis-object/@__name}}{$index-name}">
 
             <temis:apply-templates select="." mode="ui-textbox-content"/>
 
@@ -469,7 +469,7 @@
           </textarea>
         </temis:when>
         <temis:otherwise>
-          <input type="{$mode}" id="{{$temis-object/__name}}{$index-id}" name="{{$temis-object/__name}}{$index-name}">
+          <input type="{$mode}" id="{{$temis-object/@__name}}{$index-id}" name="{{$temis-object/@__name}}{$index-name}">
 
             <temis:apply-templates select="." mode="ui-textbox-content"/>
 
@@ -500,9 +500,9 @@
       </temis:choose>
     </temis:variable>
 
-    <xsl:if xmlns:xsl="content://www.w3.org/1999/XSL/Transform" test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/visible = 1">
+    <xsl:if xmlns:xsl="content://www.w3.org/1999/XSL/Transform" test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/@visible = 1">
       <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
-          <input type="{$type}" id="{{$temis-object/__name}}{$index-id}" name="{{$temis-object/__name}}{$index-name}">
+          <input type="{$type}" id="{{$temis-object/@__name}}{$index-id}" name="{{$temis-object/@__name}}{$index-name}">
 
             <temis:apply-templates select="." mode="temis-copy-attributes"/>
             <temis:apply-templates select="." mode="temis-add-handler">
@@ -540,7 +540,7 @@
           </xsl:when>
           <xsl:otherwise>
             <xsl:attribute name="value">
-              <xsl:value-of select="$temis-object/__name"/>
+              <xsl:value-of select="$temis-object/@__name"/>
             </xsl:attribute>
           </xsl:otherwise>
         </xsl:choose>
@@ -553,7 +553,7 @@
 
     <xsl:if xmlns:xsl="content://www.w3.org/1999/XSL/Transform" test="1 = 1">
       <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
-      <input type="hidden" id="{{$temis-object/__name}}{$index-id}" name="{{$temis-object/__name}}{$index-name}">
+      <input type="hidden" id="{{$temis-object/@__name}}{$index-id}" name="{{$temis-object/@__name}}{$index-name}">
 
         <temis:apply-templates select="." mode="temis-copy-attributes"/>
 
@@ -590,10 +590,10 @@
     <temis:variable name="index-name"><temis:apply-templates select="." mode="gen-index-name"/></temis:variable>
 
 
-    <xsl:if xmlns:xsl="content://www.w3.org/1999/XSL/Transform" test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/visible = 1">
+    <xsl:if xmlns:xsl="content://www.w3.org/1999/XSL/Transform" test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/@visible = 1">
       <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
 
-      <select id="{{$temis-object/__name}}{$index-id}" name="{{$temis-object/__name}}{$index-name}">
+      <select id="{{$temis-object/@__name}}{$index-id}" name="{{$temis-object/@__name}}{$index-name}">
 
         <temis:apply-templates select="." mode="temis-copy-attributes"/>
 
@@ -687,9 +687,9 @@
     <temis:variable name="index-id"><temis:apply-templates select="." mode="gen-index-id"/></temis:variable>
     <temis:variable name="index-name"><temis:apply-templates select="." mode="gen-index-name"/></temis:variable>
 
-    <xsl:if xmlns:xsl="content://www.w3.org/1999/XSL/Transform" test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/visible = 1">
+    <xsl:if xmlns:xsl="content://www.w3.org/1999/XSL/Transform" test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/@visible = 1">
       <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
-      <input type="file" id="{{$temis-object/__name}}{$index-id}" name="{{$temis-object/__name}}{$index-name}">
+      <input type="file" id="{{$temis-object/@__name}}{$index-id}" name="{{$temis-object/@__name}}{$index-name}">
 
         <temis:apply-templates select="." mode="temis-copy-attributes"/>
         <temis:apply-templates select="." mode="temis-add-handler">
@@ -711,9 +711,9 @@
 
 
 
-    <xsl:if xmlns:xsl="content://www.w3.org/1999/XSL/Transform" test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/visible = 1">
+    <xsl:if xmlns:xsl="content://www.w3.org/1999/XSL/Transform" test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/@visible = 1">
       <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
-      <input type="checkbox" id="{{$temis-object/__name}}{$index-id}" name="{{$temis-object/__name}}{$index-name}">
+      <input type="checkbox" id="{{$temis-object/@__name}}{$index-id}" name="{{$temis-object/@__name}}{$index-name}">
 
         <temis:apply-templates select="." mode="temis-copy-attributes"/>
         <temis:apply-templates select="." mode="temis-add-handler">
@@ -760,7 +760,7 @@
       </input>
 
       <temis:if test="count( @ui:caption ) != 0">
-        <label id="{{$temis-object/__name}}{$index-id}-label" for="{{$temis-object/__name}}{$index-id}" style="{@ui:caption-style}" class="{@ui:caption-class}">
+        <label id="{{$temis-object/@__name}}{$index-id}-label" for="{{$temis-object/@__name}}{$index-id}" style="{@ui:caption-style}" class="{@ui:caption-class}">
 
           <temis:apply-templates mode="ui:message" select="@ui:caption"/>
         </label>
@@ -769,7 +769,7 @@
 
       <script>
         <xsl:variable name="temis-object-id">
-          <xsl:value-of select="$temis-object/__name"/>
+          <xsl:value-of select="$temis-object/@__name"/>
           <temis:if test="count(@ui:index) !=0 ">-</temis:if>
           <temis:apply-templates select="@ui:index" mode="gen-index-valueof"/>
         </xsl:variable>
@@ -793,9 +793,9 @@
 
 
 
-    <xsl:if xmlns:xsl="content://www.w3.org/1999/XSL/Transform" test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/visible = 1">
+    <xsl:if xmlns:xsl="content://www.w3.org/1999/XSL/Transform" test="count($temis-widget/{@id}) = 0 or $temis-widget/{@id}/@visible = 1">
       <xsl:variable name="temis-object" select="$temis-widget/{@id}"/>
-      <input type="radio" id="{{$temis-object/__name}}{$index-id}" name="{{$temis-object/__name}}{$index-name}">
+      <input type="radio" id="{{$temis-object/@__name}}{$index-id}" name="{{$temis-object/@__name}}{$index-name}">
 
         <temis:apply-templates select="." mode="temis-copy-attributes"/>
         <temis:apply-templates select="." mode="temis-add-handler">
@@ -826,7 +826,7 @@
       </input>
 
       <temis:if test="count( @ui:caption ) != 0">
-        <label id="{{$temis-object/__name}}{$index-id}-label" for="{{$temis-object/__name}}{$index-id}" style="{@ui:caption-style}" class="{@ui:caption-class}">
+        <label id="{{$temis-object/@__name}}{$index-id}-label" for="{{$temis-object/@__name}}{$index-id}" style="{@ui:caption-style}" class="{@ui:caption-class}">
 
           <temis:apply-templates mode="ui:message" select="@ui:caption"/>
         </label>
